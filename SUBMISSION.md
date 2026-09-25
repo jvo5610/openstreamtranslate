@@ -2,7 +2,7 @@
 
 ## Project name
 
-Vibeathon Live Captions
+OpenStreamTranslate
 
 ## Tagline
 
@@ -14,7 +14,7 @@ One GPU inference per stage. Accessible bilingual captions for every viewer.
 
 ## Public repository
 
-https://github.com/jvo5610/vibeathon-live-captions
+https://github.com/jvo5610/openstreamtranslate
 
 ## Inspiration
 
@@ -26,7 +26,7 @@ with audience size.
 
 ## What it does
 
-Vibeathon Live Captions accepts live English or Spanish audio and publishes
+OpenStreamTranslate accepts live English or Spanish audio and publishes
 original plus translated captions in near real time. Viewers choose the stage
 and language from a familiar video player. Producers get a separate Studio for
 microphone/video input, per-talk technical glossaries and SRT/VTT/TXT export.
@@ -59,8 +59,8 @@ made one Redis subscription feed all local SSE clients for a session.
 ## Accomplishments
 
 - 3.70% English WER on a real technical video with a human reference;
-- ten simultaneous sources with a 2.72 s maximum first-caption delay;
-- 1,000 viewers on one replica with 133.1 ms fan-out p95 and one shared event;
+- ten simultaneous sources with a 3.51 s maximum first-caption delay;
+- 1,000 viewers on one replica with 173.07 ms fan-out p95 and one shared event;
 - English↔Spanish streams running simultaneously without cross-talk;
 - technical hotwords and exact translation mappings per talk;
 - no commercial inference API or per-viewer model cost.
@@ -77,7 +77,7 @@ viewers.
 
 - word-level alignment and speaker labels;
 - Portuguese after evaluating it with human references;
-- production media-ingress adapters for SRT/RTMP/WebRTC;
+- authentication, rate limits and production ingress hardening;
 - multi-GPU scheduling with Ray Serve/KubeRay;
 - a second-pass high-accuracy transcript after each talk.
 

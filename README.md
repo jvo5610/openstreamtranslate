@@ -1,13 +1,13 @@
-# Vibeathon Live Captions
+# OpenStreamTranslate
 
 Construí un servicio de subtítulos bilingües de baja latencia para conferencias.
 Mi objetivo es ejecutar una sola inferencia por escenario, distribuir el
 resultado a miles de espectadores y mantener una operación reproducible con
 software abierto.
 
-**Repositorio público:** <https://github.com/jvo5610/vibeathon-live-captions>
+**Repositorio público:** <https://github.com/jvo5610/openstreamtranslate>
 
-> **English summary:** Vibeathon Live Captions turns live English or Spanish
+> **English summary:** OpenStreamTranslate turns live English or Spanish
 > audio into original-language and translated captions. A GPU pipeline runs
 > faster-whisper `large-v3-turbo` plus TranslateGemma 4B; FastAPI and Redis
 > distribute each caption once to every viewer through reconnectable SSE. The
@@ -60,7 +60,7 @@ y `make stress`.
 
 ## Arquitectura
 
-![Arquitectura de Vibeathon Live Captions](docs/diagrams/architecture.png)
+![Arquitectura de OpenStreamTranslate](docs/diagrams/architecture.png)
 
 1. Recibo desde Studio, OBS o el media ingress audio PCM mono de 16 kHz por WebSocket.
 2. Ejecuto `faster-whisper` para reconocer el idioma original con contexto y *hotwords*.
@@ -228,7 +228,7 @@ Media server ───────── HLS/WebRTC ─────────�
     └── FFmpeg: PCM mono 16 kHz
               │ WebSocket binario
               ▼
-        Vibeathon Live Captions
+        OpenStreamTranslate
               │ SSE
               ├──► player con selector CC
               └──► overlay transparente para OBS/vMix

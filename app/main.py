@@ -753,7 +753,7 @@ async def lifespan(app: FastAPI):
     await app.state.broker.close()
 
 
-app = FastAPI(title="Vibeathon Live Captions", lifespan=lifespan)
+app = FastAPI(title="OpenStreamTranslate", lifespan=lifespan)
 app.mount("/static", StaticFiles(directory=STATIC), name="static")
 
 

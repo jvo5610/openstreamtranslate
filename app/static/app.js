@@ -255,7 +255,7 @@ async function startSimulation(file) {
     sourceStatus.textContent = `Señal activa · ${source.toUpperCase()} → ${target.toUpperCase()}`;
   }, delay);
   preview.onended = () => {
-    sourceStatus.textContent = "La señal simulada terminó.";
+    sourceStatus.textContent = "La señal terminó · SRT, VTT y TXT listos para descargar.";
     setIdle();
   };
 }
@@ -277,7 +277,7 @@ async function stopSource() {
   mediaStream = null;
   sourceNode = null;
   processor = null;
-  sourceStatus.textContent = "Fuente detenida.";
+  sourceStatus.textContent = "Fuente detenida · SRT, VTT y TXT listos para descargar.";
   setIdle();
 }
 

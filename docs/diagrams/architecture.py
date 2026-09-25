@@ -1,4 +1,4 @@
-"""Generate the Vibeathon Live Captions architecture diagram."""
+"""Generate the OpenStreamTranslate architecture diagram."""
 
 from pathlib import Path
 
@@ -37,7 +37,7 @@ EDGE_ATTRIBUTES = {
 
 
 with Diagram(
-    "Vibeathon Live Captions",
+    "OpenStreamTranslate",
     filename=str(OUTPUT),
     outformat="png",
     show=False,
