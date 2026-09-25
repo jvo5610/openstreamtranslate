@@ -1,0 +1,13 @@
+{
+  "viewers": 100,
+  "successful_viewers": 100,
+  "publish_request_ms": 19.77,
+  "delivery_p50_ms": 6.5,
+  "delivery_p95_ms": 10.17,
+  "delivery_p99_ms": 10.38,
+  "delivery_max_ms": 10.43,
+  "one_event_id": true,
+  "max_p95_ms": 100.0,
+  "passed": true,
+  "errors": []
+}

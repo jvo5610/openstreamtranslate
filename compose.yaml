@@ -1,0 +1,46 @@
+services:
+  redis:
+    image: redis:7.4-alpine
+    command: ["redis-server", "--appendonly", "yes"]
+    volumes:
+      - redis-data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 3s
+      timeout: 2s
+      retries: 10
+
+  app:
+    build: .
+    ports:
+      - "8080:8080"
+    env_file:
+      - path: .env
+        required: false
+    environment:
+      ASR_URL: ${ASR_URL:-http://host.docker.internal:18081}
+      TRANSLATION_URL: ${TRANSLATION_URL:-http://host.docker.internal:18080}
+      SOURCE_LANGUAGE: ${SOURCE_LANGUAGE:-en}
+      TARGET_LANGUAGE: ${TARGET_LANGUAGE:-es}
+      LIVE_UPDATE_SECONDS: ${LIVE_UPDATE_SECONDS:-1.5}
+      LIVE_FINAL_SECONDS: ${LIVE_FINAL_SECONDS:-3}
+      LIVE_MAX_FINAL_SECONDS: ${LIVE_MAX_FINAL_SECONDS:-4.5}
+      LIVE_OVERLAP_SECONDS: ${LIVE_OVERLAP_SECONDS:-0.75}
+      REDIS_URL: ${REDIS_URL:-redis://redis:6379/0}
+      SIMULATOR_START_DELAY_SECONDS: ${SIMULATOR_START_DELAY_SECONDS:-2}
+    depends_on:
+      redis:
+        condition: service_healthy
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    volumes:
+      - simulator-data:/tmp/vibeathon-live-simulator
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8080/api/health', timeout=3)"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  redis-data:
+  simulator-data:

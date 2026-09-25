@@ -1,0 +1,921 @@
+{
+  "source_sessions": 1,
+  "viewers_per_session": 100,
+  "total_viewers": 100,
+  "successful_viewers": 100,
+  "first_caption_p50_seconds": 1.608,
+  "first_caption_max_seconds": 1.613,
+  "model_p50_seconds": 0.321,
+  "fanout_delivery_p50_ms": 18.75,
+  "fanout_delivery_p95_ms": 23.99,
+  "fanout_delivery_max_ms": 24.43,
+  "one_shared_event_per_session": true,
+  "event_ids_by_session": {
+    "acceptance-1": [
+      "1790313199549-0"
+    ]
+  },
+  "passed": true,
+  "details": [
+    {
+      "session_id": "acceptance-1",
+      "event_id": "1790313199549-0",
+      "end_to_end_seconds": 1.606,
+      "fanout_delivery_ms": 17.55,
+      "model_seconds": 0.321,
+      "valid": true,
+      "error": null
+    },
+    {
+      "session_id": "acceptance-1",
+      "event_id": "1790313199549-0",
+      "end_to_end_seconds": 1.608,
+      "fanout_delivery_ms": 18.87,
+      "model_seconds": 0.321,
+      "valid": true,
+      "error": null
+    },
+    {
+      "session_id": "acceptance-1",
+      "event_id": "1790313199549-0",
+      "end_to_end_seconds": 1.612,
+      "fanout_delivery_ms": 23.54,
+      "model_seconds": 0.321,
+      "valid": true,
+      "error": null
+    },
+    {
+      "session_id": "acceptance-1",
+      "event_id": "1790313199549-0",
+      "end_to_end_seconds": 1.598,
+      "fanout_delivery_ms": 9.62,
+      "model_seconds": 0.321,
+      "valid": true,
+      "error": null
+    },
+    {
+      "session_id": "acceptance-1",
+      "event_id": "1790313199549-0",
+      "end_to_end_seconds": 1.612,
+      "fanout_delivery_ms": 23.48,
+      "model_seconds": 0.321,
+      "valid": true,
+      "error": null
+    },
+    {
+      "session_id": "acceptance-1",
+      "event_id": "1790313199549-0",
+      "end_to_end_seconds": 1.608,
+      "fanout_delivery_ms": 19.54,
+      "model_seconds": 0.321,
+      "valid": true,
+      "error": null
+    },
+    {
+      "session_id": "acceptance-1",
+      "event_id": "1790313199549-0",
+      "end_to_end_seconds": 1.612,
+      "fanout_delivery_ms": 23.13,
+      "model_seconds": 0.321,
+      "valid": true,
+      "error": null
+    },
+    {
+      "session_id": "acceptance-1",
+      "event_id": "1790313199549-0",
+      "end_to_end_seconds": 1.613,
+      "fanout_delivery_ms": 24.15,
+      "model_seconds": 0.321,
+      "valid": true,
+      "error": null
+    },
+    {
+      "session_id": "acceptance-1",
+      "event_id": "1790313199549-0",
+      "end_to_end_seconds": 1.599,
+      "fanout_delivery_ms": 9.88,
+      "model_seconds": 0.321,
+      "valid": true,
+      "error": null
+    },
+    {
+      "session_id": "acceptance-1",
+      "event_id": "1790313199549-0",
+      "end_to_end_seconds": 1.598,
+      "fanout_delivery_ms": 9.08,
+      "model_seconds": 0.321,
+      "valid": true,
+      "error": null
+    },
+    {
+      "session_id": "acceptance-1",
+      "event_id": "1790313199549-0",
+      "end_to_end_seconds": 1.597,
+      "fanout_delivery_ms": 8.27,
+      "model_seconds": 0.321,
+      "valid": true,
+      "error": null
+    },
+    {
+      "session_id": "acceptance-1",
+      "event_id": "1790313199549-0",
+      "end_to_end_seconds": 1.613,
+      "fanout_delivery_ms": 24.24,
+      "model_seconds": 0.321,
+      "valid": true,
+      "error": null
+    },
+    {
+      "session_id": "acceptance-1",
+      "event_id": "1790313199549-0",
+      "end_to_end_seconds": 1.6,
+      "fanout_delivery_ms": 11.36,
+      "model_seconds": 0.321,
+      "valid": true,
+      "error": null
+    },
+    {
+      "session_id": "acceptance-1",
+      "event_id": "1790313199549-0",
+      "end_to_end_seconds": 1.595,
+      "fanout_delivery_ms": 6.58,
+      "model_seconds": 0.321,
+      "valid": true,
+      "error": null
+    },
+    {
+      "session_id": "acceptance-1",
+      "event_id": "1790313199549-0",
+      "end_to_end_seconds": 1.6,
+      "fanout_delivery_ms": 11.22,
+      "model_seconds": 0.321,
+      "valid": true,
+      "error": null
+    },
+    {
+      "session_id": "acceptance-1",
+      "event_id": "1790313199549-0",
+      "end_to_end_seconds": 1.599,
+      "fanout_delivery_ms": 10.04,
+      "model_seconds": 0.321,
+      "valid": true,
+      "error": null
+    },
+    {
+      "session_id": "acceptance-1",
+      "event_id": "1790313199549-0",
+      "end_to_end_seconds": 1.599,
+      "fanout_delivery_ms": 10.29,
+      "model_seconds": 0.321,
+      "valid": true,
+      "error": null
+    },
+    {
+      "session_id": "acceptance-1",
+      "event_id": "1790313199549-0",
+      "end_to_end_seconds": 1.599,
+      "fanout_delivery_ms": 10.18,
+      "model_seconds": 0.321,
+      "valid": true,
+      "error": null
+    },
+    {
+      "session_id": "acceptance-1",
+      "event_id": "1790313199549-0",
+      "end_to_end_seconds": 1.595,
+      "fanout_delivery_ms": 5.86,
+      "model_seconds": 0.321,
+      "valid": true,
+      "error": null
+    },
+    {
+      "session_id": "acceptance-1",
+      "event_id": "1790313199549-0",
+      "end_to_end_seconds": 1.612,
+      "fanout_delivery_ms": 23.26,
+      "model_seconds": 0.321,
+      "valid": true,
+      "error": null
+    },
+    {
+      "session_id": "acceptance-1",
+      "event_id": "1790313199549-0",
+      "end_to_end_seconds": 1.594,
+      "fanout_delivery_ms": 5.64,
+      "model_seconds": 0.321,
+      "valid": true,
+      "error": null
+    },
+    {
+      "session_id": "acceptance-1",
+      "event_id": "1790313199549-0",
+      "end_to_end_seconds": 1.596,
+      "fanout_delivery_ms": 6.83,
+      "model_seconds": 0.321,
+      "valid": true,
+      "error": null
+    },
+    {
+      "session_id": "acceptance-1",
+      "event_id": "1790313199549-0",
+      "end_to_end_seconds": 1.613,
+      "fanout_delivery_ms": 24.07,
+      "model_seconds": 0.321,
+      "valid": true,
+      "error": null
+    },
+    {
+      "session_id": "acceptance-1",
+      "event_id": "1790313199549-0",
+      "end_to_end_seconds": 1.6,
+      "fanout_delivery_ms": 11.09,
+      "model_seconds": 0.321,
+      "valid": true,
+      "error": null
+    },
+    {
+      "session_id": "acceptance-1",
+      "event_id": "1790313199549-0",
+      "end_to_end_seconds": 1.599,
+      "fanout_delivery_ms": 9.75,
+      "model_seconds": 0.321,
+      "valid": true,
+      "error": null
+    },
+    {
+      "session_id": "acceptance-1",
+      "event_id": "1790313199549-0",
+      "end_to_end_seconds": 1.61,
+      "fanout_delivery_ms": 21.32,
+      "model_seconds": 0.321,
+      "valid": true,
+      "error": null
+    },
+    {
+      "session_id": "acceptance-1",
+      "event_id": "1790313199549-0",
+      "end_to_end_seconds": 1.592,
+      "fanout_delivery_ms": 2.7,
+      "model_seconds": 0.321,
+      "valid": true,
+      "error": null
+    },
+    {
+      "session_id": "acceptance-1",
+      "event_id": "1790313199549-0",
+      "end_to_end_seconds": 1.6,
+      "fanout_delivery_ms": 10.83,
+      "model_seconds": 0.321,
+      "valid": true,
+      "error": null
+    },
+    {
+      "session_id": "acceptance-1",
+      "event_id": "1790313199549-0",
+      "end_to_end_seconds": 1.611,
+      "fanout_delivery_ms": 22.59,
+      "model_seconds": 0.321,
+      "valid": true,
+      "error": null
+    },
+    {
+      "session_id": "acceptance-1",
+      "event_id": "1790313199549-0",
+      "end_to_end_seconds": 1.596,
+      "fanout_delivery_ms": 7.25,
+      "model_seconds": 0.321,
+      "valid": true,
+      "error": null
+    },
+    {
+      "session_id": "acceptance-1",
+      "event_id": "1790313199549-0",
+      "end_to_end_seconds": 1.596,
+      "fanout_delivery_ms": 6.72,
+      "model_seconds": 0.321,
+      "valid": true,
+      "error": null
+    },
+    {
+      "session_id": "acceptance-1",
+      "event_id": "1790313199549-0",
+      "end_to_end_seconds": 1.6,
+      "fanout_delivery_ms": 10.94,
+      "model_seconds": 0.321,
+      "valid": true,
+      "error": null
+    },
+    {
+      "session_id": "acceptance-1",
+      "event_id": "1790313199549-0",
+      "end_to_end_seconds": 1.599,
+      "fanout_delivery_ms": 10.4,
+      "model_seconds": 0.321,
+      "valid": true,
+      "error": null
+    },
+    {
+      "session_id": "acceptance-1",
+      "event_id": "1790313199549-0",
+      "end_to_end_seconds": 1.598,
+      "fanout_delivery_ms": 8.77,
+      "model_seconds": 0.321,
+      "valid": true,
+      "error": null
+    },
+    {
+      "session_id": "acceptance-1",
+      "event_id": "1790313199549-0",
+      "end_to_end_seconds": 1.612,
+      "fanout_delivery_ms": 23.2,
+      "model_seconds": 0.321,
+      "valid": true,
+      "error": null
+    },
+    {
+      "session_id": "acceptance-1",
+      "event_id": "1790313199549-0",
+      "end_to_end_seconds": 1.608,
+      "fanout_delivery_ms": 18.97,
+      "model_seconds": 0.321,
+      "valid": true,
+      "error": null
+    },
+    {
+      "session_id": "acceptance-1",
+      "event_id": "1790313199549-0",
+      "end_to_end_seconds": 1.606,
+      "fanout_delivery_ms": 17.42,
+      "model_seconds": 0.321,
+      "valid": true,
+      "error": null
+    },
+    {
+      "session_id": "acceptance-1",
+      "event_id": "1790313199549-0",
+      "end_to_end_seconds": 1.607,
+      "fanout_delivery_ms": 18.4,
+      "model_seconds": 0.321,
+      "valid": true,
+      "error": null
+    },
+    {
+      "session_id": "acceptance-1",
+      "event_id": "1790313199549-0",
+      "end_to_end_seconds": 1.6,
+      "fanout_delivery_ms": 10.7,
+      "model_seconds": 0.321,
+      "valid": true,
+      "error": null
+    },
+    {
+      "session_id": "acceptance-1",
+      "event_id": "1790313199549-0",
+      "end_to_end_seconds": 1.598,
+      "fanout_delivery_ms": 9.19,
+      "model_seconds": 0.321,
+      "valid": true,
+      "error": null
+    },
+    {
+      "session_id": "acceptance-1",
+      "event_id": "1790313199549-0",
+      "end_to_end_seconds": 1.611,
+      "fanout_delivery_ms": 22.17,
+      "model_seconds": 0.321,
+      "valid": true,
+      "error": null
+    },
+    {
+      "session_id": "acceptance-1",
+      "event_id": "1790313199549-0",
+      "end_to_end_seconds": 1.612,
+      "fanout_delivery_ms": 23.31,
+      "model_seconds": 0.321,
+      "valid": true,
+      "error": null
+    },
+    {
+      "session_id": "acceptance-1",
+      "event_id": "1790313199549-0",
+      "end_to_end_seconds": 1.612,
+      "fanout_delivery_ms": 23.64,
+      "model_seconds": 0.321,
+      "valid": true,
+      "error": null
+    },
+    {
+      "session_id": "acceptance-1",
+      "event_id": "1790313199549-0",
+      "end_to_end_seconds": 1.596,
+      "fanout_delivery_ms": 6.98,
+      "model_seconds": 0.321,
+      "valid": true,
+      "error": null
+    },
+    {
+      "session_id": "acceptance-1",
+      "event_id": "1790313199549-0",
+      "end_to_end_seconds": 1.613,
+      "fanout_delivery_ms": 23.73,
+      "model_seconds": 0.321,
+      "valid": true,
+      "error": null
+    },
+    {
+      "session_id": "acceptance-1",
+      "event_id": "1790313199549-0",
+      "end_to_end_seconds": 1.599,
+      "fanout_delivery_ms": 10.56,
+      "model_seconds": 0.321,
+      "valid": true,
+      "error": null
+    },
+    {
+      "session_id": "acceptance-1",
+      "event_id": "1790313199549-0",
+      "end_to_end_seconds": 1.598,
+      "fanout_delivery_ms": 9.52,
+      "model_seconds": 0.321,
+      "valid": true,
+      "error": null
+    },
+    {
+      "session_id": "acceptance-1",
+      "event_id": "1790313199549-0",
+      "end_to_end_seconds": 1.61,
+      "fanout_delivery_ms": 21.46,
+      "model_seconds": 0.321,
+      "valid": true,
+      "error": null
+    },
+    {
+      "session_id": "acceptance-1",
+      "event_id": "1790313199549-0",
+      "end_to_end_seconds": 1.598,
+      "fanout_delivery_ms": 8.88,
+      "model_seconds": 0.321,
+      "valid": true,
+      "error": null
+    },
+    {
+      "session_id": "acceptance-1",
+      "event_id": "1790313199549-0",
+      "end_to_end_seconds": 1.595,
+      "fanout_delivery_ms": 6.41,
+      "model_seconds": 0.321,
+      "valid": true,
+      "error": null
+    },
+    {
+      "session_id": "acceptance-1",
+      "event_id": "1790313199549-0",
+      "end_to_end_seconds": 1.598,
+      "fanout_delivery_ms": 9.3,
+      "model_seconds": 0.321,
+      "valid": true,
+      "error": null
+    },
+    {
+      "session_id": "acceptance-1",
+      "event_id": "1790313199549-0",
+      "end_to_end_seconds": 1.612,
+      "fanout_delivery_ms": 22.68,
+      "model_seconds": 0.321,
+      "valid": true,
+      "error": null
+    },
+    {
+      "session_id": "acceptance-1",
+      "event_id": "1790313199549-0",
+      "end_to_end_seconds": 1.61,
+      "fanout_delivery_ms": 21.61,
+      "model_seconds": 0.321,
+      "valid": true,
+      "error": null
+    },
+    {
+      "session_id": "acceptance-1",
+      "event_id": "1790313199549-0",
+      "end_to_end_seconds": 1.598,
+      "fanout_delivery_ms": 9.4,
+      "model_seconds": 0.321,
+      "valid": true,
+      "error": null
+    },
+    {
+      "session_id": "acceptance-1",
+      "event_id": "1790313199549-0",
+      "end_to_end_seconds": 1.597,
+      "fanout_delivery_ms": 8.65,
+      "model_seconds": 0.321,
+      "valid": true,
+      "error": null
+    },
+    {
+      "session_id": "acceptance-1",
+      "event_id": "1790313199549-0",
+      "end_to_end_seconds": 1.595,
+      "fanout_delivery_ms": 6.24,
+      "model_seconds": 0.321,
+      "valid": true,
+      "error": null
+    },
+    {
+      "session_id": "acceptance-1",
+      "event_id": "1790313199549-0",
+      "end_to_end_seconds": 1.607,
+      "fanout_delivery_ms": 18.2,
+      "model_seconds": 0.321,
+      "valid": true,
+      "error": null
+    },
+    {
+      "session_id": "acceptance-1",
+      "event_id": "1790313199549-0",
+      "end_to_end_seconds": 1.611,
+      "fanout_delivery_ms": 22.49,
+      "model_seconds": 0.321,
+      "valid": true,
+      "error": null
+    },
+    {
+      "session_id": "acceptance-1",
+      "event_id": "1790313199549-0",
+      "end_to_end_seconds": 1.597,
+      "fanout_delivery_ms": 8.51,
+      "model_seconds": 0.321,
+      "valid": true,
+      "error": null
+    },
+    {
+      "session_id": "acceptance-1",
+      "event_id": "1790313199549-0",
+      "end_to_end_seconds": 1.608,
+      "fanout_delivery_ms": 19.29,
+      "model_seconds": 0.321,
+      "valid": true,
+      "error": null
+    },
+    {
+      "session_id": "acceptance-1",
+      "event_id": "1790313199549-0",
+      "end_to_end_seconds": 1.611,
+      "fanout_delivery_ms": 21.99,
+      "model_seconds": 0.321,
+      "valid": true,
+      "error": null
+    },
+    {
+      "session_id": "acceptance-1",
+      "event_id": "1790313199549-0",
+      "end_to_end_seconds": 1.609,
+      "fanout_delivery_ms": 19.83,
+      "model_seconds": 0.321,
+      "valid": true,
+      "error": null
+    },
+    {
+      "session_id": "acceptance-1",
+      "event_id": "1790313199549-0",
+      "end_to_end_seconds": 1.607,
+      "fanout_delivery_ms": 18.63,
+      "model_seconds": 0.321,
+      "valid": true,
+      "error": null
+    },
+    {
+      "session_id": "acceptance-1",
+      "event_id": "1790313199549-0",
+      "end_to_end_seconds": 1.598,
+      "fanout_delivery_ms": 8.97,
+      "model_seconds": 0.321,
+      "valid": true,
+      "error": null
+    },
+    {
+      "session_id": "acceptance-1",
+      "event_id": "1790313199549-0",
+      "end_to_end_seconds": 1.609,
+      "fanout_delivery_ms": 20.21,
+      "model_seconds": 0.321,
+      "valid": true,
+      "error": null
+    },
+    {
+      "session_id": "acceptance-1",
+      "event_id": "1790313199549-0",
+      "end_to_end_seconds": 1.608,
+      "fanout_delivery_ms": 19.07,
+      "model_seconds": 0.321,
+      "valid": true,
+      "error": null
+    },
+    {
+      "session_id": "acceptance-1",
+      "event_id": "1790313199549-0",
+      "end_to_end_seconds": 1.607,
+      "fanout_delivery_ms": 17.99,
+      "model_seconds": 0.321,
+      "valid": true,
+      "error": null
+    },
+    {
+      "session_id": "acceptance-1",
+      "event_id": "1790313199549-0",
+      "end_to_end_seconds": 1.609,
+      "fanout_delivery_ms": 20.56,
+      "model_seconds": 0.321,
+      "valid": true,
+      "error": null
+    },
+    {
+      "session_id": "acceptance-1",
+      "event_id": "1790313199549-0",
+      "end_to_end_seconds": 1.608,
+      "fanout_delivery_ms": 19.41,
+      "model_seconds": 0.321,
+      "valid": true,
+      "error": null
+    },
+    {
+      "session_id": "acceptance-1",
+      "event_id": "1790313199549-0",
+      "end_to_end_seconds": 1.607,
+      "fanout_delivery_ms": 18.1,
+      "model_seconds": 0.321,
+      "valid": true,
+      "error": null
+    },
+    {
+      "session_id": "acceptance-1",
+      "event_id": "1790313199549-0",
+      "end_to_end_seconds": 1.606,
+      "fanout_delivery_ms": 17.17,
+      "model_seconds": 0.321,
+      "valid": true,
+      "error": null
+    },
+    {
+      "session_id": "acceptance-1",
+      "event_id": "1790313199549-0",
+      "end_to_end_seconds": 1.612,
+      "fanout_delivery_ms": 23.01,
+      "model_seconds": 0.321,
+      "valid": true,
+      "error": null
+    },
+    {
+      "session_id": "acceptance-1",
+      "event_id": "1790313199549-0",
+      "end_to_end_seconds": 1.611,
+      "fanout_delivery_ms": 22.28,
+      "model_seconds": 0.321,
+      "valid": true,
+      "error": null
+    },
+    {
+      "session_id": "acceptance-1",
+      "event_id": "1790313199549-0",
+      "end_to_end_seconds": 1.609,
+      "fanout_delivery_ms": 20.12,
+      "model_seconds": 0.321,
+      "valid": true,
+      "error": null
+    },
+    {
+      "session_id": "acceptance-1",
+      "event_id": "1790313199549-0",
+      "end_to_end_seconds": 1.608,
+      "fanout_delivery_ms": 18.78,
+      "model_seconds": 0.321,
+      "valid": true,
+      "error": null
+    },
+    {
+      "session_id": "acceptance-1",
+      "event_id": "1790313199549-0",
+      "end_to_end_seconds": 1.607,
+      "fanout_delivery_ms": 17.87,
+      "model_seconds": 0.321,
+      "valid": true,
+      "error": null
+    },
+    {
+      "session_id": "acceptance-1",
+      "event_id": "1790313199549-0",
+      "end_to_end_seconds": 1.611,
+      "fanout_delivery_ms": 22.38,
+      "model_seconds": 0.321,
+      "valid": true,
+      "error": null
+    },
+    {
+      "session_id": "acceptance-1",
+      "event_id": "1790313199549-0",
+      "end_to_end_seconds": 1.61,
+      "fanout_delivery_ms": 21.16,
+      "model_seconds": 0.321,
+      "valid": true,
+      "error": null
+    },
+    {
+      "session_id": "acceptance-1",
+      "event_id": "1790313199549-0",
+      "end_to_end_seconds": 1.608,
+      "fanout_delivery_ms": 19.16,
+      "model_seconds": 0.321,
+      "valid": true,
+      "error": null
+    },
+    {
+      "session_id": "acceptance-1",
+      "event_id": "1790313199549-0",
+      "end_to_end_seconds": 1.607,
+      "fanout_delivery_ms": 18.3,
+      "model_seconds": 0.321,
+      "valid": true,
+      "error": null
+    },
+    {
+      "session_id": "acceptance-1",
+      "event_id": "1790313199549-0",
+      "end_to_end_seconds": 1.606,
+      "fanout_delivery_ms": 17.32,
+      "model_seconds": 0.321,
+      "valid": true,
+      "error": null
+    },
+    {
+      "session_id": "acceptance-1",
+      "event_id": "1790313199549-0",
+      "end_to_end_seconds": 1.613,
+      "fanout_delivery_ms": 23.91,
+      "model_seconds": 0.321,
+      "valid": true,
+      "error": null
+    },
+    {
+      "session_id": "acceptance-1",
+      "event_id": "1790313199549-0",
+      "end_to_end_seconds": 1.612,
+      "fanout_delivery_ms": 22.84,
+      "model_seconds": 0.321,
+      "valid": true,
+      "error": null
+    },
+    {
+      "session_id": "acceptance-1",
+      "event_id": "1790313199549-0",
+      "end_to_end_seconds": 1.611,
+      "fanout_delivery_ms": 21.88,
+      "model_seconds": 0.321,
+      "valid": true,
+      "error": null
+    },
+    {
+      "session_id": "acceptance-1",
+      "event_id": "1790313199549-0",
+      "end_to_end_seconds": 1.609,
+      "fanout_delivery_ms": 19.7,
+      "model_seconds": 0.321,
+      "valid": true,
+      "error": null
+    },
+    {
+      "session_id": "acceptance-1",
+      "event_id": "1790313199549-0",
+      "end_to_end_seconds": 1.607,
+      "fanout_delivery_ms": 18.52,
+      "model_seconds": 0.321,
+      "valid": true,
+      "error": null
+    },
+    {
+      "session_id": "acceptance-1",
+      "event_id": "1790313199549-0",
+      "end_to_end_seconds": 1.606,
+      "fanout_delivery_ms": 17.66,
+      "model_seconds": 0.321,
+      "valid": true,
+      "error": null
+    },
+    {
+      "session_id": "acceptance-1",
+      "event_id": "1790313199549-0",
+      "end_to_end_seconds": 1.613,
+      "fanout_delivery_ms": 24.33,
+      "model_seconds": 0.321,
+      "valid": true,
+      "error": null
+    },
+    {
+      "session_id": "acceptance-1",
+      "event_id": "1790313199549-0",
+      "end_to_end_seconds": 1.613,
+      "fanout_delivery_ms": 23.99,
+      "model_seconds": 0.321,
+      "valid": true,
+      "error": null
+    },
+    {
+      "session_id": "acceptance-1",
+      "event_id": "1790313199549-0",
+      "end_to_end_seconds": 1.612,
+      "fanout_delivery_ms": 23.41,
+      "model_seconds": 0.321,
+      "valid": true,
+      "error": null
+    },
+    {
+      "session_id": "acceptance-1",
+      "event_id": "1790313199549-0",
+      "end_to_end_seconds": 1.612,
+      "fanout_delivery_ms": 22.92,
+      "model_seconds": 0.321,
+      "valid": true,
+      "error": null
+    },
+    {
+      "session_id": "acceptance-1",
+      "event_id": "1790313199549-0",
+      "end_to_end_seconds": 1.611,
+      "fanout_delivery_ms": 22.08,
+      "model_seconds": 0.321,
+      "valid": true,
+      "error": null
+    },
+    {
+      "session_id": "acceptance-1",
+      "event_id": "1790313199549-0",
+      "end_to_end_seconds": 1.609,
+      "fanout_delivery_ms": 19.97,
+      "model_seconds": 0.321,
+      "valid": true,
+      "error": null
+    },
+    {
+      "session_id": "acceptance-1",
+      "event_id": "1790313199549-0",
+      "end_to_end_seconds": 1.608,
+      "fanout_delivery_ms": 18.71,
+      "model_seconds": 0.321,
+      "valid": true,
+      "error": null
+    },
+    {
+      "session_id": "acceptance-1",
+      "event_id": "1790313199549-0",
+      "end_to_end_seconds": 1.607,
+      "fanout_delivery_ms": 17.76,
+      "model_seconds": 0.321,
+      "valid": true,
+      "error": null
+    },
+    {
+      "session_id": "acceptance-1",
+      "event_id": "1790313199549-0",
+      "end_to_end_seconds": 1.613,
+      "fanout_delivery_ms": 24.43,
+      "model_seconds": 0.321,
+      "valid": true,
+      "error": null
+    },
+    {
+      "session_id": "acceptance-1",
+      "event_id": "1790313199549-0",
+      "end_to_end_seconds": 1.613,
+      "fanout_delivery_ms": 23.81,
+      "model_seconds": 0.321,
+      "valid": true,
+      "error": null
+    },
+    {
+      "session_id": "acceptance-1",
+      "event_id": "1790313199549-0",
+      "end_to_end_seconds": 1.612,
+      "fanout_delivery_ms": 23.36,
+      "model_seconds": 0.321,
+      "valid": true,
+      "error": null
+    },
+    {
+      "session_id": "acceptance-1",
+      "event_id": "1790313199549-0",
+      "end_to_end_seconds": 1.612,
+      "fanout_delivery_ms": 22.75,
+      "model_seconds": 0.321,
+      "valid": true,
+      "error": null
+    },
+    {
+      "session_id": "acceptance-1",
+      "event_id": "1790313199549-0",
+      "end_to_end_seconds": 1.611,
+      "fanout_delivery_ms": 21.75,
+      "model_seconds": 0.321,
+      "valid": true,
+      "error": null
+    }
+  ]
+}

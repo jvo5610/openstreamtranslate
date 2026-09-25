@@ -1,0 +1,95 @@
+1
+00:00:01,042 --> 00:00:04,045
+Why don't
+you tell us what you're working on?
+
+2
+00:00:05,005 --> 00:00:08,216
+Computing is bits plus neurons,
+plus qubits.
+
+3
+00:00:08,800 --> 00:00:10,510
+We're in a really exciting time
+for quantum,
+
+4
+00:00:10,510 --> 00:00:13,596
+where we're having co-development
+of applications, theory
+
+5
+00:00:13,596 --> 00:00:16,599
+and hardware.
+
+6
+00:00:17,767 --> 00:00:20,770
+We have new fridges
+now that have a modular configuration.
+
+7
+00:00:21,104 --> 00:00:24,065
+Right now
+we're a touch below 20 millikelvin.
+
+8
+00:00:24,482 --> 00:00:28,945
+We get to create an AI architecture
+from scratch in AI.
+
+9
+00:00:28,987 --> 00:00:31,990
+We need different perspectives
+represented.
+
+10
+00:00:32,073 --> 00:00:33,825
+Open source is the way to go.
+
+11
+00:00:33,825 --> 00:00:36,327
+All levels of our technology
+stack are here.
+
+12
+00:00:36,327 --> 00:00:40,206
+Not only will these technologies continue
+to mature and provide value on their own,
+
+13
+00:00:40,206 --> 00:00:42,042
+but in the next five years, we'll see
+
+14
+00:00:42,042 --> 00:00:45,045
+meaningful intersection points
+between these technologies.
+
+15
+00:00:45,045 --> 00:00:49,215
+Every year, something happens
+that I would not have believed possible.
+
+16
+00:00:49,382 --> 00:00:51,426
+What's next?
+What's next? What's next? What's next?
+
+17
+00:00:51,426 --> 00:00:55,513
+What's next in computing
+is democratized open technology, quantum
+
+18
+00:00:55,513 --> 00:00:58,516
+coherently coupled processors,
+seamless computing.
+
+19
+00:00:58,558 --> 00:01:02,145
+What amazes me the most
+is that we have gone this far,
+
+20
+00:01:02,145 --> 00:01:03,980
+but that we keep going further.

@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Vibeathon Live</title>
+    <link rel="stylesheet" href="/static/styles.css?v=13" />
+  </head>
+  <body class="audience-page">
+    <main class="audience-layout">
+      <header class="topbar">
+        <a class="brand" href="/"><span class="brand-dot"></span> VIBEATHON LIVE</a>
+        <label class="session-picker">
+          <span>Charla</span>
+          <select id="session-select" aria-label="Elegir sesión"></select>
+        </label>
+        <span id="audience-status" class="connection-status">Conectando…</span>
+      </header>
+
+      <section id="player-shell" class="player-shell audience-player">
+        <video id="stream-video" class="stream-video" playsinline></video>
+        <div id="video-placeholder" class="video-placeholder">
+          <div class="signal-icon"><span></span><span></span><span></span></div>
+          <strong>Esperando señal</strong>
+          <small>La transmisión comenzará automáticamente.</small>
+        </div>
+
+        <div class="live-badge"><span></span><b id="session-state">ESPERANDO</b></div>
+
+        <div id="video-caption" class="video-caption" aria-live="polite" hidden>
+          <span id="overlay-primary" class="overlay-primary"></span>
+        </div>
+
+        <div class="player-gradient"></div>
+        <div class="player-controls" aria-label="Controles del reproductor">
+          <button id="play-toggle" class="icon-button" aria-label="Reproducir">▶</button>
+          <button id="mute-toggle" class="icon-button" aria-label="Silenciar">🔊</button>
+          <div class="live-progress"><span></span></div>
+          <div class="caption-control">
+            <button id="caption-language-button" class="cc-button" aria-expanded="false" aria-haspopup="menu">
+              <b>CC</b><span id="caption-language-label">ES</span>
+            </button>
+            <div id="caption-language-menu" class="caption-menu" role="menu" hidden>
+              <div class="menu-title">Subtítulos</div>
+              <button role="menuitemradio" data-language="off" aria-checked="false">Desactivados</button>
+              <button role="menuitemradio" data-language="es" aria-checked="true">Español</button>
+              <button role="menuitemradio" data-language="en" aria-checked="false">English</button>
+            </div>
+          </div>
+          <button id="fullscreen-toggle" class="icon-button" aria-label="Pantalla completa">⛶</button>
+        </div>
+      </section>
+
+      <div class="below-player">
+        <div>
+          <span id="live-kicker" class="live-kicker">ESPERANDO</span>
+          <h1 id="session-title">Main Stage</h1>
+        </div>
+      </div>
+    </main>
+    <script src="/static/watch.js?v=21"></script>
+  </body>
+</html>

@@ -1,0 +1,206 @@
+{
+  "url": "ws://127.0.0.1:8080/api/live",
+  "audio_seconds": 6.5,
+  "levels": [
+    {
+      "sessions": 2,
+      "successful_sessions": 2,
+      "wall_seconds": 6.628,
+      "first_caption_p50_seconds": 1.702,
+      "first_caption_max_seconds": 1.761,
+      "passed": true,
+      "details": [
+        {
+          "session": 1,
+          "captions": 5,
+          "first_caption_seconds": 1.761,
+          "final_seen": true,
+          "original_nonempty": true,
+          "translation_nonempty": true,
+          "stopped": true,
+          "error": null
+        },
+        {
+          "session": 2,
+          "captions": 5,
+          "first_caption_seconds": 1.644,
+          "final_seen": true,
+          "original_nonempty": true,
+          "translation_nonempty": true,
+          "stopped": true,
+          "error": null
+        }
+      ]
+    },
+    {
+      "sessions": 5,
+      "successful_sessions": 5,
+      "wall_seconds": 7.713,
+      "first_caption_p50_seconds": 2.008,
+      "first_caption_max_seconds": 2.02,
+      "passed": true,
+      "details": [
+        {
+          "session": 1,
+          "captions": 5,
+          "first_caption_seconds": 1.998,
+          "final_seen": true,
+          "original_nonempty": true,
+          "translation_nonempty": true,
+          "stopped": true,
+          "error": null
+        },
+        {
+          "session": 2,
+          "captions": 5,
+          "first_caption_seconds": 1.978,
+          "final_seen": true,
+          "original_nonempty": true,
+          "translation_nonempty": true,
+          "stopped": true,
+          "error": null
+        },
+        {
+          "session": 3,
+          "captions": 5,
+          "first_caption_seconds": 2.02,
+          "final_seen": true,
+          "original_nonempty": true,
+          "translation_nonempty": true,
+          "stopped": true,
+          "error": null
+        },
+        {
+          "session": 4,
+          "captions": 5,
+          "first_caption_seconds": 2.008,
+          "final_seen": true,
+          "original_nonempty": true,
+          "translation_nonempty": true,
+          "stopped": true,
+          "error": null
+        },
+        {
+          "session": 5,
+          "captions": 5,
+          "first_caption_seconds": 2.016,
+          "final_seen": true,
+          "original_nonempty": true,
+          "translation_nonempty": true,
+          "stopped": true,
+          "error": null
+        }
+      ]
+    },
+    {
+      "sessions": 10,
+      "successful_sessions": 10,
+      "wall_seconds": 8.833,
+      "first_caption_p50_seconds": 2.756,
+      "first_caption_max_seconds": 2.839,
+      "passed": true,
+      "details": [
+        {
+          "session": 1,
+          "captions": 5,
+          "first_caption_seconds": 2.764,
+          "final_seen": true,
+          "original_nonempty": true,
+          "translation_nonempty": true,
+          "stopped": true,
+          "error": null
+        },
+        {
+          "session": 2,
+          "captions": 5,
+          "first_caption_seconds": 2.839,
+          "final_seen": true,
+          "original_nonempty": true,
+          "translation_nonempty": true,
+          "stopped": true,
+          "error": null
+        },
+        {
+          "session": 3,
+          "captions": 5,
+          "first_caption_seconds": 2.739,
+          "final_seen": true,
+          "original_nonempty": true,
+          "translation_nonempty": true,
+          "stopped": true,
+          "error": null
+        },
+        {
+          "session": 4,
+          "captions": 5,
+          "first_caption_seconds": 2.767,
+          "final_seen": true,
+          "original_nonempty": true,
+          "translation_nonempty": true,
+          "stopped": true,
+          "error": null
+        },
+        {
+          "session": 5,
+          "captions": 5,
+          "first_caption_seconds": 2.739,
+          "final_seen": true,
+          "original_nonempty": true,
+          "translation_nonempty": true,
+          "stopped": true,
+          "error": null
+        },
+        {
+          "session": 6,
+          "captions": 5,
+          "first_caption_seconds": 2.823,
+          "final_seen": true,
+          "original_nonempty": true,
+          "translation_nonempty": true,
+          "stopped": true,
+          "error": null
+        },
+        {
+          "session": 7,
+          "captions": 5,
+          "first_caption_seconds": 2.715,
+          "final_seen": true,
+          "original_nonempty": true,
+          "translation_nonempty": true,
+          "stopped": true,
+          "error": null
+        },
+        {
+          "session": 8,
+          "captions": 5,
+          "first_caption_seconds": 2.748,
+          "final_seen": true,
+          "original_nonempty": true,
+          "translation_nonempty": true,
+          "stopped": true,
+          "error": null
+        },
+        {
+          "session": 9,
+          "captions": 5,
+          "first_caption_seconds": 2.739,
+          "final_seen": true,
+          "original_nonempty": true,
+          "translation_nonempty": true,
+          "stopped": true,
+          "error": null
+        },
+        {
+          "session": 10,
+          "captions": 5,
+          "first_caption_seconds": 2.775,
+          "final_seen": true,
+          "original_nonempty": true,
+          "translation_nonempty": true,
+          "stopped": true,
+          "error": null
+        }
+      ]
+    }
+  ]
+}

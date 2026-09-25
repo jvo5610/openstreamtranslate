@@ -1,0 +1,36 @@
+{
+  "simultaneous_streams": 2,
+  "viewers_per_stream": 10,
+  "max_first_caption_seconds": 5,
+  "streams": [
+    {
+      "session_id": "bilingual-en-es-9534776",
+      "language_pair": "en-es",
+      "viewers": 10,
+      "successful_viewers": 10,
+      "first_caption_p50_seconds": 1.776,
+      "first_caption_max_seconds": 1.777,
+      "delivery_p95_ms": 7.43,
+      "one_shared_event": true,
+      "original_preview": "Why don't you...",
+      "translation_preview": "¿Por qué no...?",
+      "passed": true,
+      "errors": []
+    },
+    {
+      "session_id": "bilingual-es-en-9534776",
+      "language_pair": "es-en",
+      "viewers": 10,
+      "successful_viewers": 10,
+      "first_caption_p50_seconds": 1.796,
+      "first_caption_max_seconds": 1.797,
+      "delivery_p95_ms": 5.37,
+      "one_shared_event": true,
+      "original_preview": "Bueno, muchas gracias.",
+      "translation_preview": "Okay, thank you very much.",
+      "passed": true,
+      "errors": []
+    }
+  ],
+  "passed": true
+}

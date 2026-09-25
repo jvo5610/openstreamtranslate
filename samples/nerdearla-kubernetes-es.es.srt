@@ -1,0 +1,140 @@
+1
+00:00:00,199 --> 00:00:03,520
+es tuyo.
+
+2
+00:00:00,880 --> 00:00:06,440
+Bueno, muchas gracias. Muchas gracias.
+
+3
+00:00:03,520 --> 00:00:09,320
+Eh, bueno, mi nombre es Eduardo, eh,
+
+4
+00:00:06,440 --> 00:00:12,320
+vengo de Buenos Aires y trabajo como
+
+5
+00:00:09,320 --> 00:00:15,920
+DevOps en un Ministerio Público, ¿sí?
+
+6
+00:00:12,320 --> 00:00:18,480
+Eh, donde, bueno, estamos empezando a
+
+7
+00:00:15,920 --> 00:00:20,279
+cada vez a adaptar adoptar más de de
+
+8
+00:00:18,480 --> 00:00:22,760
+estas herramientas como la que vamos a
+
+9
+00:00:20,279 --> 00:00:24,760
+estar repasando hoy. Eh, arrancamos con
+
+10
+00:00:22,760 --> 00:00:26,000
+la pregunta. Eh, en el título de la
+
+11
+00:00:24,760 --> 00:00:29,080
+charla igual estaba un poco la
+
+12
+00:00:26,000 --> 00:00:30,759
+respuesta. Eh, y bueno, vamos a estar
+
+13
+00:00:29,080 --> 00:00:34,320
+teniendo un acercamiento a Clone Native
+
+14
+00:00:30,759 --> 00:00:35,399
+PG, eh, no, un operador para manejar
+
+15
+00:00:34,320 --> 00:00:37,559
+bases de datos relacionales en
+
+16
+00:00:35,399 --> 00:00:39,960
+Cubernets. Sí, estamos hablando un poco
+
+17
+00:00:37,559 --> 00:00:43,640
+de cubernets y bases de datos, dos
+
+18
+00:00:39,960 --> 00:00:45,760
+conceptos que no siempre se han se han
+
+19
+00:00:43,640 --> 00:00:47,920
+querido mezclar del todo, ¿no? Un poco
+
+20
+00:00:45,760 --> 00:00:50,960
+el agua y el aceite.
+
+21
+00:00:47,920 --> 00:00:53,199
+Eh, bueno, este mini disclaimer es para
+
+22
+00:00:50,960 --> 00:00:55,359
+decir nada más que tenemos diferentes
+
+23
+00:00:53,199 --> 00:00:57,559
+operadores
+
+24
+00:00:55,359 --> 00:01:00,280
+open source en cubernets para trabajar
+
+25
+00:00:57,559 --> 00:01:01,719
+con bases de datos. En el día de hoy
+
+26
+00:01:00,280 --> 00:01:06,159
+vamos a estar trabajando con uno que es
+
+27
+00:01:01,719 --> 00:01:08,159
+dedicado a Cubernets en su versión
+
+28
+00:01:06,159 --> 00:01:11,119
+vanila, ¿no? En su versión, por así
+
+29
+00:01:08,159 --> 00:01:14,000
+decirlo, más pura. Eh, y lo mismo con
+
+30
+00:01:11,119 --> 00:01:17,200
+Postgress en su versión eh mantenida por
+
+31
+00:01:14,000 --> 00:01:21,240
+el Global Development Group. Así que
+
+32
+00:01:17,200 --> 00:01:25,280
+vamos con algo bien eh digamos eh con
+
+33
+00:01:21,240 --> 00:01:28,439
+algo bien stri, algo bien eh no fork, no
+
+34
+00:01:25,280 --> 00:01:31,159
+desvíos, no nada extraño. Sí, Cernets
+
+35
+00:01:28,439 --> 00:01:33,280
+más postgress. Eh, como les decía, dos
+

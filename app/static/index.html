@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Vibeathon Live · Studio</title>
+    <link rel="stylesheet" href="/static/styles.css?v=15" />
+  </head>
+  <body class="studio-page">
+    <main class="studio-layout">
+      <header class="topbar">
+        <a class="brand" href="/"><span class="brand-dot"></span> VIBEATHON LIVE · STUDIO</a>
+        <a class="quiet-link" href="/">Ver transmisión →</a>
+        <span id="health" class="connection-status">Comprobando…</span>
+      </header>
+
+      <section class="studio-heading">
+        <p class="eyebrow">ENTRADA DE ESCENARIO</p>
+        <h1>Conectar una señal</h1>
+        <p>Una fuente por escenario. La audiencia recibe el resultado mediante SSE sin repetir inferencia.</p>
+      </section>
+
+      <section class="source-panel">
+        <label>Escenario
+          <select id="session-select" aria-label="Elegir sesión"></select>
+        </label>
+        <label>Traducción
+          <select id="direction-select" aria-label="Elegir dirección de traducción">
+            <option value="en-es">English → Español</option>
+            <option value="es-en">Español → English</option>
+          </select>
+        </label>
+        <div class="source-actions">
+          <button id="mic" class="primary-action">Usar micrófono</button>
+          <label class="file-action">Simular con video<input id="stream-file" type="file" accept="audio/*,video/*" /></label>
+          <button id="stop-stream" class="stop-action" disabled>Detener</button>
+        </div>
+      </section>
+
+      <details class="glossary-panel">
+        <summary>
+          <span>Glosario técnico</span>
+          <small id="glossary-direction">EN → ES</small>
+        </summary>
+        <div class="glossary-editor">
+          <label for="glossary-entries">Una entrada por línea</label>
+          <textarea id="glossary-entries" rows="7" spellcheck="false" placeholder="Kubernetes&#10;CloudNativePG&#10;base de datos = database"></textarea>
+          <div class="glossary-footer">
+            <small>Usá <b>origen = traducción</b>. Si no lleva “=”, se preserva igual en ambos idiomas.</small>
+            <button id="save-glossary" type="button" class="glossary-save">Guardar glosario</button>
+          </div>
+          <p id="glossary-status" class="glossary-status" aria-live="polite"></p>
+        </div>
+      </details>
+
+      <details class="export-panel">
+        <summary>
+          <span>Exportar transcripción</span>
+          <small>SRT · VTT · TXT</small>
+        </summary>
+        <div class="export-editor">
+          <label>Idioma
+            <select id="export-language" aria-label="Idioma de exportación"></select>
+          </label>
+          <div class="export-actions" aria-label="Formatos de exportación">
+            <a class="export-button" data-format="srt" download>Descargar SRT</a>
+            <a class="export-button" data-format="vtt" download>Descargar VTT</a>
+            <a class="export-button" data-format="txt" download>Descargar TXT</a>
+          </div>
+          <small>Incluye únicamente bloques confirmados de la sesión elegida.</small>
+        </div>
+      </details>
+
+      <section id="player-shell" class="player-shell studio-player">
+        <video id="preview" class="stream-video" playsinline></video>
+        <div id="video-placeholder" class="video-placeholder">
+          <div class="signal-icon"><span></span><span></span><span></span></div>
+          <strong>Sin señal</strong>
+          <small>Conectá un micrófono o simulá un stream.</small>
+        </div>
+        <div class="live-badge"><span></span><b id="mode">LISTO</b></div>
+        <div id="video-caption" class="video-caption" aria-live="polite" hidden>
+          <span id="overlay-primary" class="overlay-primary"></span>
+        </div>
+      </section>
+
+      <p id="source-status" class="source-status">Esperando una fuente.</p>
+    </main>
+    <script src="/static/app.js?v=15"></script>
+  </body>
+</html>

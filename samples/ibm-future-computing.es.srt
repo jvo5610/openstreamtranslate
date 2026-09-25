@@ -1,0 +1,94 @@
+1
+00:00:01,042 --> 00:00:04,045
+¿Por qué no nos contás en qué estás trabajando?
+
+2
+00:00:05,005 --> 00:00:08,216
+La computación son bits, más neuronas,
+más cúbits.
+
+3
+00:00:08,800 --> 00:00:10,510
+Estamos en un momento realmente emocionante
+para la computación cuántica,
+
+4
+00:00:10,510 --> 00:00:13,596
+en el que desarrollamos conjuntamente
+aplicaciones, teoría
+
+5
+00:00:13,596 --> 00:00:16,599
+y hardware.
+
+6
+00:00:17,767 --> 00:00:20,770
+Ahora tenemos nuevos refrigeradores
+con una configuración modular.
+
+7
+00:00:21,104 --> 00:00:24,065
+En este momento estamos apenas
+por debajo de los 20 milikelvin.
+
+8
+00:00:24,482 --> 00:00:28,945
+Podemos crear una arquitectura de IA
+desde cero dentro de la IA.
+
+9
+00:00:28,987 --> 00:00:31,990
+Necesitamos que estén representadas
+distintas perspectivas.
+
+10
+00:00:32,073 --> 00:00:33,825
+El código abierto es el camino a seguir.
+
+11
+00:00:33,825 --> 00:00:36,327
+Todos los niveles de nuestra pila
+tecnológica están aquí.
+
+12
+00:00:36,327 --> 00:00:40,206
+Estas tecnologías no sólo seguirán madurando
+y aportando valor por sí mismas,
+
+13
+00:00:40,206 --> 00:00:42,042
+sino que en los próximos cinco años veremos
+
+14
+00:00:42,042 --> 00:00:45,045
+puntos de intersección significativos
+entre ellas.
+
+15
+00:00:45,045 --> 00:00:49,215
+Cada año sucede algo
+que no habría creído posible.
+
+16
+00:00:49,382 --> 00:00:51,426
+¿Qué sigue?
+¿Qué sigue? ¿Qué sigue? ¿Qué sigue?
+
+17
+00:00:51,426 --> 00:00:55,513
+Lo próximo en computación es tecnología abierta
+democratizada, computación cuántica,
+
+18
+00:00:55,513 --> 00:00:58,516
+procesadores acoplados de forma coherente
+y computación fluida.
+
+19
+00:00:58,558 --> 00:01:02,145
+Lo que más me sorprende
+es que hayamos llegado tan lejos,
+
+20
+00:01:02,145 --> 00:01:03,980
+pero que sigamos avanzando aún más.
