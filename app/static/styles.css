@@ -116,7 +116,7 @@ button, a, select, label { -webkit-tap-highlight-color: transparent; }
 .export-editor > small { margin-left: auto; color: var(--muted); line-height: 1.4; }
 
 .embed-root, .embed-page { overflow: hidden; background: transparent; }
-.embed-caption { position: fixed; left: 6vw; right: 6vw; bottom: 8vh; color: white; font-family: Inter, Arial, sans-serif; font-size: clamp(30px, 4.2vw, 68px); font-weight: 850; line-height: 1.16; text-align: center; white-space: pre-line; text-shadow: 0 3px 8px #000, 0 0 3px #000; }
+.embed-caption { position: fixed; left: 4vw; right: 4vw; bottom: 8vh; color: white; font-family: Inter, Arial, sans-serif; font-size: clamp(18px, 2.7vw, 42px); font-weight: 850; line-height: 1.16; text-align: center; white-space: pre-line; text-shadow: 0 3px 8px #000, 0 0 3px #000; }
 .embed-caption[hidden] { display: none; }
 .embed-caption span { padding: .1em .35em .18em; border-radius: .12em; background: rgba(0,0,0,.78); box-decoration-break: clone; -webkit-box-decoration-break: clone; }
 
