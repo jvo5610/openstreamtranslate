@@ -1,7 +1,8 @@
 # Vibeathon Live Captions
 
-Subtítulos bilingües de baja latencia para conferencias: una inferencia por
-escenario, distribución a miles de espectadores y operación reproducible con
+Construí un servicio de subtítulos bilingües de baja latencia para conferencias.
+Mi objetivo es ejecutar una sola inferencia por escenario, distribuir el
+resultado a miles de espectadores y mantener una operación reproducible con
 software abierto.
 
 **Repositorio público:** <https://github.com/jvo5610/vibeathon-live-captions>
@@ -18,11 +19,11 @@ software abierto.
 
 Nerdearla necesita transcribir más de 30 charlas, varias en simultáneo. Las
 soluciones comerciales actuales son costosas, requieren operación manual y
-escalan por espectador. Este proyecto cambia esa unidad económica: **la GPU
-trabaja una vez por escenario activo** y el caption resultante se reparte a
-todos los espectadores sin reinferencia.
+escalan por espectador. Por eso diseñé el proyecto alrededor de otra unidad
+económica: **la GPU trabaja una vez por escenario activo** y distribuyo el
+caption resultante a todos los espectadores sin reinferencia.
 
-La solución cubre el MVP y cuatro opcionales de la
+Mi solución cubre el MVP y cuatro opcionales de la
 [Nerdearla Vibeathon 2026](https://nerdearla26.devpost.com/):
 
 - audio real desde micrófono, archivo o adaptador de stream;
@@ -37,33 +38,38 @@ La solución cubre el MVP y cuatro opcionales de la
 ## Evidencia rápida
 
 Los resultados versionados en [`acceptance/latest-results`](acceptance/latest-results/)
-provienen de la batería incluida en este repositorio, ejecutada contra una RTX
+provienen de la batería que incluí en este repositorio y ejecuté contra una RTX
 3090:
 
 | Dimensión del jurado | Resultado medido |
 |---|---|
 | Calidad ASR inglesa | WER **3,70 %** / exactitud 96,30 % contra subtítulos humanos |
-| 10 sesiones en paralelo | primera leyenda p50 **2,62 s**, máximo **2,72 s** |
+| Traducción EN→ES | chrF **0,6873** / F1 léxico **0,7208** contra referencia revisada |
+| Calidad ASR española | WER orientativo **22,22 %** contra captions automáticos de origen |
+| 10 sesiones en paralelo | primera leyenda p50 **3,47 s**, máximo **3,51 s** |
 | 2 streams bilingües + 20 viewers | 20/20 clientes, aislamiento correcto |
-| 100 viewers en una charla | p95 de fan-out **24,75 ms**, una sola inferencia |
-| 1.000 viewers en una réplica | p95 **133,1 ms**, mismo `event_id` para todos |
+| 100 viewers en una charla | p95 de fan-out **17,12 ms**, una sola inferencia |
+| 1.000 viewers en una réplica | p95 **173,07 ms**, mismo `event_id` para todos |
+| 5.000 viewers en una réplica | p95 **1,316 s**, prueba extrema con un solo proceso |
 | Experiencia visual | atraso observado 0,1–2,4 s; cola pico de un bloque |
+| Pausa del directo | video y caption congelados; al reanudar vuelven juntos al punto en vivo |
 
-Son mediciones de laboratorio, no una promesa del cluster de producción. Los
-gates pueden repetirse con `make acceptance` y `make stress`.
+Presento estas cifras como mediciones de laboratorio, no como una promesa del
+cluster de producción. Se pueden repetir con `make quality`, `make acceptance`
+y `make stress`.
 
 ## Arquitectura
 
 ![Arquitectura de Vibeathon Live Captions](docs/diagrams/architecture.png)
 
-1. Studio, OBS o el media ingress envían PCM mono de 16 kHz por WebSocket.
-2. `faster-whisper` reconoce el idioma original usando contexto y *hotwords*.
-3. TranslateGemma produce el caption destino aplicando el glosario de la charla.
-4. Redis Streams conserva el historial corto; Pub/Sub lo comparte entre réplicas.
-5. Cada réplica mantiene una suscripción Redis por sesión y distribuye
+1. Recibo desde Studio, OBS o el media ingress audio PCM mono de 16 kHz por WebSocket.
+2. Ejecuto `faster-whisper` para reconocer el idioma original con contexto y *hotwords*.
+3. Uso TranslateGemma para producir el caption destino y aplicar el glosario de la charla.
+4. Conservo un historial corto en Redis Streams y comparto eventos entre réplicas con Pub/Sub.
+5. Mantengo una suscripción Redis por sesión y réplica; desde allí distribuyo
    localmente por SSE, con replay mediante `Last-Event-ID`.
-6. El navegador superpone los subtítulos sobre el video; cambiar idioma es
-   local y no vuelve a invocar los modelos.
+6. Superpongo los subtítulos en el navegador. El cambio de idioma es local y no
+   vuelve a ejecutar los modelos.
 
 La fuente editable del diagrama está en
 [`docs/diagrams/architecture.py`](docs/diagrams/architecture.py). Para regenerar
@@ -104,7 +110,7 @@ modelos no se redistribuyen; cada operador debe aceptar y respetar sus licencias
 
 ### 1. Configurar el host GPU
 
-No hay hostnames personales en el repositorio. Indicá tu servidor y, si no es
+No hay hostnames personales en el repositorio. Indica tu servidor y, si no es
 22, su puerto SSH:
 
 ```bash
@@ -113,7 +119,7 @@ export REMOTE_SSH_PORT=22
 export REMOTE_ROOT=vibeathon-benchmark
 ```
 
-Sincronizá el servicio y encendé los modelos:
+Sincroniza el servicio y enciende los modelos:
 
 ```bash
 make remote-sync
@@ -144,7 +150,7 @@ make smoke
 El smoke test usa `samples/ibm-future-computing-360p.webm`, incluido en el repo;
 no depende de archivos privados ni rutas externas.
 
-Abrí:
+Abre:
 
 - audiencia: <http://localhost:8080/>;
 - operación: <http://localhost:8080/studio>;
@@ -161,18 +167,18 @@ make remote-stop
 ### Servicios de inferencia ya existentes
 
 Si ASR y traducción ya están desplegados, no se necesitan los scripts SSH.
-Copiá `.env.example` a `.env`, cambiá `ASR_URL` y `TRANSLATION_URL`, y ejecutá
+Copia `.env.example` a `.env`, cambia `ASR_URL` y `TRANSLATION_URL`, y ejecuta
 solamente `docker compose up --build -d`.
 
 ## Cómo probar la demo
 
-1. Entrá a <http://localhost:8080/studio>.
-2. Elegí **Main Stage** y la dirección EN→ES o ES→EN.
-3. Abrí **Glosario técnico** y agregá términos si la charla lo requiere.
-4. Presioná **Simular con video** y elegí uno de los archivos de `samples/`.
-5. Abrí <http://localhost:8080/>: el video y los captions se sincronizan en el
+1. Entra a <http://localhost:8080/studio>.
+2. Elige **Main Stage** y la dirección EN→ES o ES→EN.
+3. Abre **Glosario técnico** y agrega términos si la charla lo requiere.
+4. Presiona **Simular con video** y elige uno de los archivos de `samples/`.
+5. Abre <http://localhost:8080/>: el video y los captions se sincronizan en el
    mismo reproductor. El menú **CC** cambia idioma u oculta subtítulos.
-6. Al terminar, desplegá **Exportar transcripción** en Studio para descargar
+6. Al terminar, despliega **Exportar transcripción** en Studio para descargar
    SRT, VTT o texto.
 
 También se puede usar **Usar micrófono**. El navegador pedirá permiso sólo para
@@ -207,43 +213,82 @@ GET /api/sessions/{id}/glossary?source_language=es&target_language=en
 PUT /api/sessions/{id}/glossary
 ```
 
-## Integración con streaming
+## Cómo lo integraría con un stream real
 
-El front demuestra el recurso, pero no es una dependencia del pipeline:
+Diseñé el front como una demostración, no como una dependencia obligatoria. En
+producción mantendría el video en el media server o CDN y derivaría solamente el
+audio hacia este servicio:
 
-| Uso | Endpoint |
+```text
+OBS / vMix
+    │ SRT o RTMP
+    ▼
+Media server ───────── HLS/WebRTC ─────────► audiencia
+    │
+    └── FFmpeg: PCM mono 16 kHz
+              │ WebSocket binario
+              ▼
+        Vibeathon Live Captions
+              │ SSE
+              ├──► player con selector CC
+              └──► overlay transparente para OBS/vMix
+```
+
+Para conectar una señal RTMP, SRT o HLS incluí un bridge que reinicia la
+conexión si la fuente todavía no está disponible o se corta:
+
+```bash
+python scripts/media_stream_bridge.py \
+  --input-url rtmp://media-server:1935/live/main \
+  --caption-ws 'ws://captions:8080/api/sessions/main-stage/input?source=es&target=en'
+```
+
+El bridge usa FFmpeg para descartar el video, convertir el audio a PCM firmado
+de 16 bits, mono y 16 kHz, y enviarlo en bloques binarios. Para otra charla uso
+otro `session_id`; los espectadores adicionales no abren nuevas inferencias.
+
+| Uso | Endpoint que expongo |
 |---|---|
 | Ingresar PCM mono 16 kHz | `WS /api/sessions/{id}/input?source=en&target=es` |
 | Inyectar captions externos | `POST /api/sessions/{id}/captions` |
-| Consumir captions/replay | `GET /api/sessions/{id}/events` |
+| Consumir captions y replay | `GET /api/sessions/{id}/events` |
 | Overlay transparente | `/embed/{id}?lang=es` o `?lang=en` |
 | Exportar transcripción | `/api/sessions/{id}/transcript/{srt\|vtt\|txt}?language=es` |
 
-Ejemplo de caption externo:
+En OBS o vMix agregaría `/embed/main-stage?lang=es` como **Browser Source** o
+**Fuente de navegador**. Si debo producir una única salida, puedo quemar ese
+overlay en la composición. Si quiero que cada espectador elija idioma, no
+quemo los subtítulos: conservo el video limpio y superpongo la pista elegida en
+el player, como hace YouTube.
 
-```bash
-curl -X POST http://localhost:8080/api/sessions/main-stage/captions \
-  -H 'content-type: application/json' \
-  -d '{
-    "original":"We are live from Nerdearla.",
-    "translation":"Estamos en vivo desde Nerdearla.",
-    "source_language":"en",
-    "target_language":"es",
-    "sequence":1,
-    "final":true,
-    "audio_start_seconds":0,
-    "audio_end_seconds":2.5
-  }'
-```
+Para el laboratorio elegí HLS de baja latencia porque el stream RTMP transporta
+audio AAC y MediaMTX puede entregarlo por HLS sin transcodificación adicional.
+WebRTC sigue disponible; para usarlo con audio tendría que convertir AAC a Opus.
+Prefiero hacer explícito ese costo antes que presentar una demo WebRTC sin sonido.
 
-En OBS o vMix agregá `/embed/main-stage?lang=es` como Browser Source/Fuente de
-navegador. En producción, el media server o CDN transporta el video; este
-servicio procesa sólo audio y captions.
+## Decisiones técnicas que tomé
+
+- Elegí **WebSocket** para la entrada porque necesito enviar audio binario de
+  forma continua y recibir mensajes de control en la misma conexión.
+- Elegí **SSE** para la audiencia porque el flujo es unidireccional, reconecta
+  de forma nativa y soporta replay con `Last-Event-ID`.
+- Elegí **Redis Streams + Pub/Sub** para historial corto y fan-out entre
+  réplicas. No puse Kafka en el camino crítico porque no necesito retención
+  larga para mostrar el caption; lo agregaría para auditoría o analítica.
+- Separé el **plano de media** del **plano de captions**. Así, pausar, escalar o
+  cambiar el CDN no obliga a transportar video por FastAPI.
+- Dimensiono la GPU por **escenarios activos**, no por espectadores. Los
+  gateways SSE escalan de manera independiente en CPU.
+- Mantengo workers GPU calientes. En un despliegue con varias GPU usaría
+  KubeRay/Ray Serve para colas y scheduling, pero no para reemplazar el media
+  server ni Redis.
+
+El análisis completo está en [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md).
 
 ## Comportamiento en vivo
 
-Por defecto se calcula una hipótesis cada 1,5 s, se intenta confirmar a los 3 s,
-se fuerza el cierre a 4,5 s y se conservan 750 ms de contexto. La UI:
+Por defecto calculo una hipótesis cada 1,5 s, intento confirmarla a los 3 s,
+fuerzo el cierre a 4,5 s y conservo 750 ms de contexto. En la UI:
 
 - estabiliza hipótesis parciales en lugar de apilar texto;
 - limita el subtítulo a dos líneas y aproximadamente 20 caracteres por segundo;
@@ -251,26 +296,32 @@ se fuerza el cierre a 4,5 s y se conservan 750 ms de contexto. La UI:
 - usa el video como reloj maestro y acelera suavemente si el atraso supera 1,3 s;
 - descarta parciales obsoletos antes de permitir que crezca una cola ilegible.
 
+Cuando el espectador pausa, congelo también el caption visible y descarto los
+eventos nuevos para esa vista. Cuando reanuda, vuelvo al punto en vivo, limpio
+la cola acumulada y espero el siguiente caption. Elegí esta semántica porque es
+un directo: reproducir subtítulos viejos sobre video actual sería peor que un
+breve intervalo sin texto.
+
 Estos parámetros pueden cambiarse en `.env`; sus valores y significado están
 documentados en [`.env.example`](.env.example).
 
 ## Escalabilidad
 
-La capacidad GPU escala por **escenarios activos**, no por espectadores:
+Diseñé la capacidad GPU para escalar por **escenarios activos**, no por espectadores:
 
-- FastAPI es stateless respecto de captions y puede replicarse detrás de un
+- Mantengo FastAPI stateless respecto de captions para replicarlo detrás de un
   ingress; Redis comparte sesiones e historial.
-- Cada réplica abre una sola suscripción Pub/Sub por sesión y hace fan-out a
+- En cada réplica abro una sola suscripción Pub/Sub por sesión y hago fan-out a
   colas locales acotadas.
-- Los gateways SSE escalan en CPU independientemente de ASR y traducción.
-- Los workers GPU se precalientan para el máximo de escenarios; el autoscaling
+- Escalo los gateways SSE en CPU independientemente de ASR y traducción.
+- Precaliento los workers GPU para el máximo de escenarios; el autoscaling
   reactivo suele llegar tarde por el tiempo de carga de modelos.
-- KubeRay/Ray Serve es una evolución útil para varias GPU, colas y tipos de
+- Considero KubeRay/Ray Serve una evolución útil para varias GPU, colas y tipos de
   acelerador. Kafka sólo se agrega si se necesita retención larga, analítica o
   consumidores externos; no está en el camino crítico del caption.
 
 El punto de partida recomendado es unas 1.000 conexiones SSE por réplica y un
-pool GPU dimensionado por charlas simultáneas. Repetí `make stress` detrás del
+pool GPU dimensionado por charlas simultáneas. Repite `make stress` detrás del
 ingress real antes de fijar capacidad de producción.
 
 ## Configuración
@@ -290,10 +341,10 @@ ingress real antes de fijar capacidad de producción.
 
 ## Observabilidad
 
-- `/api/health`: Redis, ASR y traducción por separado.
-- `/metrics`: streams, SSE activos, captions, latencia de modelos, atraso del
+- Expongo `/api/health` para revisar Redis, ASR y traducción por separado.
+- Expongo `/metrics` para medir streams, SSE activos, captions, latencia de modelos, atraso del
   caption, tiempo de publicación al broker y parciales descartados.
-- `docker compose logs app`: JSON por sesión, idioma, secuencia, latencia,
+- Escribo en `docker compose logs app` JSON por sesión, idioma, secuencia, latencia,
   atraso y cantidad de términos del glosario.
 
 Las métricas no aparecen en la vista pública; están destinadas a Prometheus y
@@ -303,9 +354,15 @@ al equipo de producción.
 
 ```bash
 make smoke       # salud + un archivo real
+make quality     # ASR, traducción, dos idiomas y comportamiento en vivo
 make acceptance  # requisitos, WER, concurrencia, fan-out y opcionales
 make stress      # 100, 1.000 y 5.000 espectadores SSE
 ```
+
+`make quality` procesa un video inglés con referencia humana y un fragmento
+español con referencia automática, mide WER, chrF, F1 léxico, factor de tiempo
+real y luego ejecuta ambas direcciones en simultáneo. Documento la metodología
+y sus límites en [`docs/QUALITY.md`](docs/QUALITY.md).
 
 `make acceptance` valida Compose, UI, glosario, exportación, audio real,
 latencia, WER ≤ 8 %, 2/5/10 fuentes, dos idiomas simultáneos, 100/1.000 viewers
@@ -331,13 +388,13 @@ compose.yaml             app + Redis
 
 ## Limitaciones conocidas
 
-- No hay alineación por palabra; los timestamps son por bloque.
-- La muestra española posee subtítulos automáticos de origen, por lo que su WER
-  sólo puede usarse como orientación. El gate estricto usa referencia humana
-  inglesa.
-- El simulador sirve video desde el contenedor sólo para la demo. Producción
+- Todavía no implementé alineación por palabra; los timestamps son por bloque.
+- La muestra española posee subtítulos automáticos de origen, por lo que
+  presento su WER sólo como orientación. El gate estricto usa la referencia
+  humana inglesa.
+- El simulador sirve video desde el contenedor sólo para la demo. En producción
   debe usar media server/CDN y enviar una derivación de audio al WebSocket.
-- El prototipo soporta EN y ES. Agregar portugués requiere validar ASR,
+- El prototipo soporta EN y ES. Antes de agregar portugués validaría ASR,
   traducción, velocidad de lectura y referencias humanas antes de declararlo.
 
 ## Licencia y atribuciones

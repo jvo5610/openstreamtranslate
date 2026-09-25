@@ -29,6 +29,8 @@ check 'README declara modelos y requisitos' rg -qi 'large-v3|Nemotron|TranslateG
 check 'README explica el escalado de sesiones simultáneas' rg -qi 'escalabilidad|escalar|concurren|sesiones simult[aá]neas|workers|r[eé]plicas' "$ROOT/README.md"
 check 'README incluye resumen accesible para jurados en inglés' rg -q 'English summary' "$ROOT/README.md"
 check 'Diagrama de arquitectura versionado' test -s "$ROOT/docs/diagrams/architecture.png"
+check 'Bridge RTMP/SRT/HLS a WebSocket incluido' test -s "$ROOT/scripts/media_stream_bridge.py"
+check 'Guía de calidad bilingüe incluida' test -s "$ROOT/docs/QUALITY.md"
 check 'Compose válido' docker compose -f "$ROOT/compose.yaml" config -q
 check 'Hay material de prueba importable' test -s "$SAMPLE"
 check 'Hay material de prueba en español' test -s "$SPANISH_SAMPLE"
@@ -195,6 +197,16 @@ if rg -q 'id="(language|lang|target-language|language-select)|id="caption-langua
   pass 'La audiencia puede elegir idioma'
 else
   fail 'La audiencia puede elegir idioma'
+fi
+if rg -q 'caption-control.*pause|action === "pause"' "$ROOT/app/static/embed.js"; then
+  pass 'El overlay implementa pausa y retorno al vivo'
+else
+  fail 'El overlay implementa pausa y retorno al vivo'
+fi
+if jq -e '.passed == true' "$RESULTS/quality-matrix.json" >/dev/null 2>&1; then
+  pass 'La matriz bilingüe de calidad conserva un resultado PASS'
+else
+  fail 'La matriz bilingüe de calidad conserva un resultado PASS'
 fi
 if rg -q 'SOURCE_LANGUAGE|TARGET_LANGUAGE' "$ROOT/.env.example"; then
   pass 'Idiomas configurables por entorno'

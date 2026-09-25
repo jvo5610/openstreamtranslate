@@ -7,7 +7,7 @@ mkdir -p "$RESULTS"
 
 container_id="$(docker compose -f "$ROOT/compose.yaml" ps -q app 2>/dev/null)"
 if [[ -z "$container_id" ]]; then
-  printf 'La aplicación no está ejecutándose. Usá make up primero.\n' >&2
+  printf 'La aplicación no está ejecutándose. Ejecute make up primero.\n' >&2
   exit 1
 fi
 

@@ -1,47 +1,55 @@
 # Guion de demo — 90 segundos
 
-Objetivo: mostrar valor para la audiencia, calidad técnica y escalabilidad sin
-convertir el video en una explicación de código.
+Mi objetivo es mostrar la experiencia de la audiencia, la calidad técnica y la
+capacidad de integración sin convertir el video en una explicación de código.
 
 ## Preparación
 
-- ejecutar `make smoke` y confirmar `/api/health` en verde;
-- abrir `/studio` y `/` en dos ventanas;
-- usar `samples/nerdearla-kubernetes-es.mp4` para ES→EN;
-- dejar cargados `CloudNativePG`, `Kubernetes` y `PostgreSQL` en el glosario;
-- tener a mano `acceptance/latest-results/concurrency.json` y
-  `acceptance/latest-results/sse-1000.json`;
-- grabar a 1080p y añadir subtítulos ingleses generados por el propio proyecto.
+- Ejecuto `make smoke`, `make quality` y `make acceptance`.
+- Confirmo que `/api/health` informa ASR, traducción y Redis disponibles.
+- Inicio el laboratorio de streaming y abro `http://localhost:8090`.
+- Dejo disponibles las señales Nerdearla ES→EN e IBM Research EN→ES.
+- Cargo `CloudNativePG`, `Kubernetes` y `PostgreSQL` en el glosario.
+- Preparo `acceptance/latest-results/quality-matrix.json` y
+  `acceptance/latest-results/sse-1000.json` para mostrar evidencia.
+- Grabo a 1080p y reviso manualmente los subtítulos finales del video.
 
 ## Toma sugerida
 
-**0–10 s — problema.** “Más de 30 sesiones en inglés, muchas simultáneas. Las
-soluciones comerciales escalan en costo y operación.” Mostrar la audiencia.
+**0–10 s — problema.** Explico: “Una conferencia con más de 30 sesiones necesita
+subtítulos precisos, de baja latencia y con un costo que no crezca por cada
+espectador”. Muestro el reproductor público.
 
-**10–30 s — experiencia final.** Iniciar el video español desde Studio. Cambiar
-a la vista pública y mostrar captions ingleses dentro del reproductor. Abrir el
-menú CC, ocultarlos y volver a inglés. Mutear y desmutear.
+**10–32 s — experiencia en ambos idiomas.** Inicio con Nerdearla en español y
+muestro la traducción inglesa dentro del video. Abro CC, cambio al idioma
+original y oculto el texto. Luego cambio a IBM Research y muestro la traducción
+española. Activo y desactivo el audio para demostrar que el video es real.
 
-**30–45 s — calidad.** Mostrar brevemente el glosario y señalar que reconoce
-`CloudNativePG` y `Kubernetes`. No detener el stream.
+**32–45 s — sincronización.** Pauso la transmisión. Señalo que video y caption
+quedan congelados. Reanudo y muestro que ambos regresan juntos al punto en vivo,
+sin reproducir una cola de subtítulos anteriores.
 
-**45–60 s — conectable.** Mostrar el overlay `/embed/main-stage?lang=en` y
-explicar que OBS/vMix lo consumen como Browser Source. Descargar el SRT desde
-Studio.
+**45–58 s — integración.** Muestro el flujo OBS/vMix → RTMP/SRT → MediaMTX →
+FFmpeg → WebSocket y explico que la aplicación recibe sólo audio. Muestro el
+overlay `/embed/main-stage?lang=en` como Browser Source y menciono que también
+puedo descargar SRT o VTT.
 
-**60–77 s — escala demostrada.** Superponer tres números: 10 sesiones, primera
-leyenda máxima 2,72 s; 1.000 viewers, p95 133,1 ms; WER 3,70 %. Explicar que la
-GPU trabaja por escenario y SSE distribuye el mismo evento a la audiencia.
+**58–78 s — evidencia.** Presento cuatro números: WER inglés 3,70 %; traducción
+EN→ES chrF 0,6873; 10 sesiones con primera leyenda máxima de 3,51 s; y 1.000
+espectadores con p95 de fan-out de 173,07 ms. Aclaro que la GPU trabaja una vez
+por escenario, no una vez por espectador.
 
-**77–90 s — cierre.** Mostrar el diagrama y cerrar con: “Open source, sin API
-comercial, desplegable por cualquier conferencia y listo para evolucionar a un
-pool GPU con KubeRay.”
+**78–90 s — cierre.** Muestro el diagrama y cierro: “Construí una solución
+abierta, reproducible y conectable a una cadena de streaming real. Separa media,
+inferencia y distribución para poder escalar cada parte con el recurso que
+necesita”.
 
 ## Checklist antes de publicar
 
-- duración entre 1:00 y 2:00;
-- audio real de una charla;
-- interacción visible, no sólo slides;
-- enlace público o no listado en YouTube;
-- subtítulos ingleses revisados;
-- URL copiada en `SUBMISSION.md` y en Devpost.
+- Duración entre 1:00 y 2:00.
+- Audio real de una charla, no sólo diapositivas.
+- Interacción visible con selector CC, cambio de señal, audio y pausa.
+- Una captura breve de resultados reproducibles.
+- Enlace público o no listado en YouTube.
+- Subtítulos ingleses revisados.
+- URL agregada a `SUBMISSION.md` y al formulario de Devpost.

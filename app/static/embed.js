@@ -10,8 +10,10 @@ let pendingDraft;
 let currentDisplay;
 let lastSequence = 0;
 let lastConfirmedRaw = "";
+let schedulerPaused = false;
 const displayedDrafts = new Map();
 const finalizedGroups = new Set();
+document.documentElement.dataset.playbackState = "live";
 
 function wrapCaptionLines(text, maxCharacters = window.innerWidth <= 600 ? 28 : 42) {
   const words = String(text || "").trim().split(/\s+/).filter(Boolean);
@@ -75,6 +77,7 @@ function readingDuration(text, final) {
 }
 
 function displayCaption(item) {
+  if (schedulerPaused) return;
   currentDisplay = item;
   caption.innerHTML = "";
   const span = document.createElement("span");
@@ -93,6 +96,7 @@ function displayCaption(item) {
 }
 
 function showNextCaption() {
+  if (schedulerPaused) return;
   const confirmed = displayQueue.shift();
   if (confirmed) {
     displayCaption(confirmed);
@@ -126,6 +130,7 @@ function resetCaptionScheduler() {
 }
 
 function scheduleCaption(data) {
+  if (schedulerPaused) return;
   const sequence = Number(data.sequence || 0);
   if (sequence === 1 && lastSequence > 1) resetCaptionScheduler();
   if (sequence > 0) lastSequence = sequence;
@@ -149,6 +154,25 @@ function scheduleCaption(data) {
   }
   if (!currentDisplay) showNextCaption();
 }
+
+function pauseCaptionScheduler() {
+  schedulerPaused = true;
+  clearTimeout(clearTimer);
+  clearTimeout(displayTimer);
+  document.documentElement.dataset.playbackState = "paused";
+}
+
+function resumeCaptionScheduler() {
+  schedulerPaused = false;
+  resetCaptionScheduler();
+  document.documentElement.dataset.playbackState = "live";
+}
+
+window.addEventListener("message", event => {
+  if (event.source !== window.parent || event.data?.type !== "caption-control") return;
+  if (event.data.action === "pause") pauseCaptionScheduler();
+  if (event.data.action === "resume-live") resumeCaptionScheduler();
+});
 
 const events = new EventSource(`/api/sessions/${encodeURIComponent(sessionId)}/events`);
 events.addEventListener("caption", event => scheduleCaption(JSON.parse(event.data)));

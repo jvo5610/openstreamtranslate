@@ -67,13 +67,13 @@ python3 -m venv ~/vibeathon-benchmark/.venv
 ```
 
 `faster-whisper` descarga `large-v3-turbo` en el primer arranque si no está en
-la caché de Hugging Face. Para un evento, precargalo antes y probá el arranque
+la caché de Hugging Face. Para un evento, lo precargo y pruebo el arranque
 sin depender de Internet.
 
 ## llama.cpp y TranslateGemma
 
-Usá un build CUDA de `llama-server` compatible con el driver del host. Guardá
-el GGUF donde prefieras y pasá la ruta explícitamente si no coincide con el
+Uso un build CUDA de `llama-server` compatible con el driver del host. Guardo
+el GGUF en una ruta estable y la indico explícitamente si no coincide con el
 layout predeterminado:
 
 ```bash
@@ -84,8 +84,8 @@ export TRANSLATION_MODEL_PATH=/models/translategemma-4b-it.Q8_0.gguf
 ```
 
 El repositorio no fija una URL de pesos de terceros porque su disponibilidad y
-condiciones pueden cambiar. Usá una conversión GGUF legítima de TranslateGemma
-4B IT y conservá su aviso/licencia junto al modelo desplegado.
+condiciones pueden cambiar. Uso una conversión GGUF legítima de TranslateGemma
+4B IT y conservo su aviso/licencia junto al modelo desplegado.
 
 ## Sincronizar e iniciar desde la máquina de operación
 
@@ -128,12 +128,12 @@ Los logs quedan en:
 - Los servicios se ligan a `127.0.0.1`, no a `0.0.0.0`.
 - El acceso desde la aplicación local usa un túnel SSH.
 - No guardes claves SSH, tokens de Hugging Face ni pesos en el repositorio.
-- Si los workers se despliegan dentro de una red de cluster, usá NetworkPolicy,
+- Si despliego los workers dentro de una red de cluster, uso NetworkPolicy,
   autenticación de servicio y TLS en vez de publicar los puertos de inferencia.
 
 ## Ajuste de capacidad
 
 `ASR_WORKERS=10` es el valor probado en la RTX 3090 y representa concurrencia
-de requests, no diez copias del modelo. Reducilo si aparecen errores de memoria
-o si el host comparte GPU. Medí `make acceptance` con la concurrencia real del
-evento antes de definir el número de escenarios por GPU.
+de requests, no diez copias del modelo. Lo reduzco si aparecen errores de
+memoria o si el host comparte GPU. Mido `make acceptance` con la concurrencia
+real del evento antes de definir el número de escenarios por GPU.

@@ -16,6 +16,14 @@ class OverlayTransparencyTests(unittest.TestCase):
             styles,
         )
 
+    def test_embed_exposes_pause_and_resume_contract(self) -> None:
+        script = (ROOT / "app/static/embed.js").read_text(encoding="utf-8")
+
+        self.assertIn('event.data?.type !== "caption-control"', script)
+        self.assertIn('event.data.action === "pause"', script)
+        self.assertIn('event.data.action === "resume-live"', script)
+        self.assertIn('dataset.playbackState = "paused"', script)
+
 
 if __name__ == "__main__":
     unittest.main()

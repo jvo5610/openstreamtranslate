@@ -1,7 +1,7 @@
 {
-  "session_id": "reconnect-42986807",
-  "first_event_id": "1790342986850-0",
-  "replayed_event_id": "1790342986855-0",
+  "session_id": "reconnect-45675894",
+  "first_event_id": "1790345675941-0",
+  "replayed_event_id": "1790345675945-0",
   "replayed_sequence": 2,
   "stale_event_replayed_after_stop": false,
   "passed": true

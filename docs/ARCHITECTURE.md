@@ -1,101 +1,138 @@
-# Arquitectura orientada a streaming
+# Cómo diseñé la arquitectura de streaming
 
 ![Flujo desplegable](diagrams/architecture.png)
 
-## Decisión
+## Principio central
 
-La solución separa el transporte de la señal, la inferencia por escenario y la
-distribución a la audiencia. El recurso costoso es cada escenario activo; un
-nuevo espectador no debe volver a ejecutar ASR ni traducción.
+Separé el transporte de la señal, la inferencia por escenario y la distribución
+a la audiencia. Para mí, el recurso costoso es cada escenario activo: agregar un
+espectador no debe volver a ejecutar ASR ni traducción.
 
-| Tramo | Opción elegida | Motivo |
+| Tramo | Opción que elegí | Motivo |
 |---|---|---|
-| Fuente de navegador | WebSocket binario | Necesita enviar audio de baja latencia |
-| Fuente de producción | SRT/RTMP hacia un media ingress | Protocolos soportados por OBS/vMix |
-| Simulación | FFmpeg `-re` server-side | Conserva el ritmo temporal de una señal real |
-| Estado e historial corto | Redis Streams | Orden, IDs, replay acotado y operación simple |
-| Fan-out entre réplicas | Redis Pub/Sub | Una suscripción por sesión/réplica recibe el caption |
-| Fan-out dentro de réplica | Colas `asyncio` acotadas | Miles de viewers no multiplican conexiones Redis |
-| Audiencia | SSE | Flujo unidireccional, reconexión y `Last-Event-ID` |
-| Video de producción | Media server/CDN | Los gateways de captions no deben transportar video |
+| Fuente de navegador | WebSocket binario | Necesito enviar audio continuo y mensajes de control |
+| Fuente de producción | SRT/RTMP hacia media ingress | OBS y vMix los soportan de forma nativa |
+| Simulación | FFmpeg `-re` | Reproduzco un archivo con el reloj de una señal real |
+| Player del laboratorio | HLS de baja latencia | Conserva H.264 + AAC sin otra transcodificación |
+| Historial corto | Redis Streams | Obtengo orden, IDs y replay acotado |
+| Fan-out entre réplicas | Redis Pub/Sub | Entrego una vez por sesión y réplica |
+| Fan-out dentro de réplica | Colas `asyncio` acotadas | No multiplico conexiones Redis por espectador |
+| Audiencia | SSE | Necesito flujo unidireccional, reconexión y `Last-Event-ID` |
+| Video de producción | Media server/CDN | FastAPI no debe transportar video |
 
-## Escenarios revisados
+## Cómo conecto una señal real
+
+OBS o vMix publican SRT/RTMP en el media server. Desde allí mantengo dos salidas:
+
+1. entrego video y audio a la audiencia mediante HLS o WebRTC;
+2. leo una copia de la señal con FFmpeg, descarto video y genero PCM mono de
+   16 kHz para el WebSocket de captions.
+
+Incluí `scripts/media_stream_bridge.py` como adaptador reiniciable. El servicio
+principal no conoce MediaMTX, OBS ni vMix; solamente conoce su contrato PCM. Así
+puedo cambiar de media server sin tocar ASR, traducción ni fan-out.
+
+En el laboratorio uso HLS porque RTMP transporta AAC y MediaMTX lo conserva sin
+transcodificar. WebRTC no transporta AAC en este flujo: para usarlo con audio
+agregaría una conversión a Opus. Elegí documentar esa decisión en lugar de
+mostrar un player WebRTC sin sonido.
+
+## Por qué uso WebSocket para entrada y SSE para salida
+
+En la entrada necesito audio binario continuo, detección de desconexión y un
+mensaje explícito de cierre. WebSocket cubre las tres necesidades con una sola
+conexión.
+
+En la salida el navegador sólo recibe eventos. SSE es más simple, atraviesa
+proxies HTTP habituales y EventSource reconecta con `Last-Event-ID`. No necesito
+un WebSocket por espectador para un canal unidireccional.
+
+## Cómo trato pausa y directo
+
+Cuando el player se pausa envío `caption-control: pause` al overlay. Congelo el
+texto visible y descarto nuevos eventos en esa vista; el backend sigue procesando
+porque otros espectadores continúan en vivo.
+
+Al reanudar llevo el video a `liveSyncPosition`, limpio la cola local y envío
+`caption-control: resume-live`. No intento reproducir captions acumulados sobre
+imágenes actuales. Si el producto necesitara DVR, guardaría video y captions con
+una línea de tiempo compartida; no mezclaría esa semántica con el modo en vivo.
+
+## Escenarios que revisé
 
 ### Un escenario, pocos espectadores
 
-Una réplica de aplicación y una GPU alcanzan. Redis sigue siendo útil porque
-permite demostrar reconexión y mantiene el diseño compatible con varias
-réplicas.
+Una réplica de aplicación y una GPU alcanzan. Aun así mantengo Redis porque me
+permite demostrar reconexión y conservar el mismo diseño cuando agrego réplicas.
 
 ### Cinco a diez escenarios simultáneos
 
-Cada fuente tiene un `session_id`, buffer, contexto y secuencia independiente.
-Los pedidos de ASR/traducción se distribuyen sobre el pool GPU. La batería de
-aceptación envía audio a 2, 5 y 10 fuentes en paralelo y exige captions en menos
-de cinco segundos.
+Cada fuente tiene `session_id`, buffer, contexto y secuencia independientes.
+Distribuyo los pedidos sobre el pool GPU. La batería envía audio a 2, 5 y 10
+fuentes en paralelo y exige la primera leyenda en menos de cinco segundos.
 
-### Muchos espectadores en una misma charla
+### Muchos espectadores en una charla
 
-El caption se produce una vez, se publica una vez y se entrega a todos los
-gateways interesados. Los clientes usan SSE y reciben original y traducción en
-el mismo evento. Cambiar el selector es una operación local del navegador.
+Produzco el caption una vez, lo publico una vez y lo entrego a todos los gateways
+interesados. Original y traducción viajan en el mismo evento; cambiar CC es una
+operación local del navegador.
 
-Cada réplica abre una sola suscripción Pub/Sub por sesión activa y distribuye el
-evento a colas locales acotadas. Un cliente lento pierde primero el caption más
-viejo de su cola, sin frenar al stream ni al resto de la audiencia.
+Cada réplica abre una suscripción Pub/Sub por sesión y reparte el evento a colas
+locales acotadas. Si un cliente es lento, descarto primero su caption más antiguo
+sin frenar el stream ni al resto de la audiencia.
 
 ### Corte y reconexión
 
-Redis Streams asigna un ID a cada caption. EventSource reconecta y envía
-`Last-Event-ID`; el gateway reproduce los eventos posteriores antes de continuar
-con Pub/Sub. Los captions quedan limitados a los últimos 2.000 eventos por
-sesión para controlar memoria.
+Redis Streams asigna un ID a cada caption. Cuando EventSource reconecta, uso
+`Last-Event-ID` para reproducir los eventos posteriores antes de volver a
+Pub/Sub. Limito el historial a los últimos 2.000 eventos por sesión.
 
 ### Archivo final y auditoría
 
-Los eventos finales del stream generan SRT/VTT/texto mediante
-`GET /api/sessions/{id}/transcript/{format}?language=...`. Si en el futuro
-se necesita retención multi-evento, reprocessing, data lake o varios equipos
-consumidores, se agrega Kafka para los eventos finales, no para cada frame PCM.
+Genero SRT, VTT o texto desde eventos finales mediante
+`GET /api/sessions/{id}/transcript/{format}?language=...`. Si necesitara
+retención de varios eventos, reprocessing, data lake o consumidores externos,
+agregaría Kafka para eventos finales; no lo pondría entre PCM y captions.
 
-## Kubernetes y KubeRay
+## Cómo lo llevaría a Kubernetes y KubeRay
 
-El primer despliegue Kubernetes debe mantener unidades independientes:
+Mantendría unidades independientes:
 
-- `caption-gateway`: FastAPI/SSE, CPU, réplicas horizontales.
-- `redis`: servicio administrado o StatefulSet con persistencia.
-- `asr-workers`: GPU, réplicas calientes dimensionadas por escenarios activos.
-- `translation-workers`: GPU, batching y réplica independiente.
+- `caption-gateway`: FastAPI/SSE, CPU y réplicas horizontales;
+- `redis`: servicio administrado o StatefulSet persistente;
+- `asr-workers`: GPU y capacidad caliente por escenarios activos;
+- `translation-workers`: GPU, batching y réplica independiente;
 - `media-ingress`: SRT/RTMP/HLS/WebRTC fuera del camino de inferencia.
 
-KubeRay/Ray Serve conviene cuando el evento opera varias GPU o tipos de
-acelerador y necesita scheduling, colas y autoscaling coordinado. No reemplaza
-al media ingress, al registro de sesiones ni al fan-out SSE. Para el MVP, los
-servicios HTTP de inferencia existentes reducen riesgo y ya demostraron diez
-sesiones concurrentes sobre una RTX 3090.
+Usaría KubeRay/Ray Serve cuando el evento opere varias GPU o tipos de acelerador
+y necesite scheduling, colas y autoscaling coordinado. No lo usaría para
+reemplazar el media ingress, el registro de sesiones ni el fan-out SSE. Para el
+MVP, los servicios HTTP reducen riesgo y ya demostraron diez sesiones sobre una
+RTX 3090.
 
-## Gates de producción
+## Gates que exigiría en producción
 
-- Latencia p95 desde audio hasta caption SSE.
-- Aislamiento: ningún caption puede aparecer en otra sesión.
-- Una sola inferencia por evento aunque aumenten los espectadores.
-- Backpressure por escenario y límite de memoria del buffer.
-- Reconexión SSE sin perder captions confirmados.
-- Health checks separados para broker, ASR y traducción.
-- Capacidad GPU precalentada para el máximo de escenarios simultáneos.
-- Autenticación y límites de carga en WebSocket, simulador e inyección externa.
+- latencia p95 desde audio hasta caption SSE;
+- aislamiento entre sesiones;
+- una inferencia por evento aunque aumenten los espectadores;
+- backpressure por escenario y memoria acotada;
+- reconexión SSE sin perder captions confirmados;
+- pausa/reanudación sin desincronizar video y texto;
+- health checks separados para broker, ASR y traducción;
+- capacidad GPU precalentada para el máximo de escenarios;
+- autenticación y límites de carga en WebSocket e inyección externa.
 
-## Resultados de fan-out local
+## Resultado de fan-out local
 
-El gate publica un único caption sintético y comprueba que todos los clientes
-reciban exactamente el mismo `event_id`:
+Publiqué un caption sintético y comprobé que todos los clientes recibieran el
+mismo `event_id`:
 
 | Réplica FastAPI | Viewers | Entregados | p95 | p99 |
 |---:|---:|---:|---:|---:|
-| 1 | 1.000 | 1.000 | 135 ms | 138 ms |
-| 1 | 5.000 | 5.000 | 1.169 ms | 1.183 ms |
+| 1 | 1.000 | 1.000 | 173 ms | 176 ms |
+| 1 | 5.000 | 5.000 | 1,316 s | 1,358 s |
 
-La cola de un solo proceso se vuelve visible en 5.000 conexiones. El punto de
-partida recomendado es un HPA de gateways con unas 1.000 conexiones SSE por
-réplica, manteniendo GPU workers separados. La prueba debe repetirse en el
-cluster real porque ingress, límites de archivos y red cambian el resultado.
+La cola de un proceso se vuelve visible con 5.000 conexiones. Mi punto de
+partida sería un HPA de gateways con unas 1.000 conexiones SSE por réplica y
+workers GPU separados. Repetiría la prueba detrás del ingress real porque los
+límites de archivos, red y proxy cambian el resultado.

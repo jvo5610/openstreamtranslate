@@ -1,4 +1,4 @@
-.PHONY: remote-sync remote-start remote-stop tunnel up down logs smoke acceptance stress
+.PHONY: remote-sync remote-start remote-stop tunnel up down logs smoke quality acceptance stress
 
 remote-sync:
 	./scripts/remote-sync.sh
@@ -23,6 +23,9 @@ logs:
 
 smoke:
 	./scripts/smoke-test.sh
+
+quality:
+	./scripts/quality-matrix.sh
 
 acceptance:
 	./scripts/acceptance-check.sh
