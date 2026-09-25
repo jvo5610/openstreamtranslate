@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-ROOT="${VIBEATHON_REMOTE_ROOT:-$HOME/vibeathon-benchmark}"
+ROOT="${OPENSTREAMTRANSLATE_REMOTE_ROOT:-$HOME/openstreamtranslate-runtime}"
 for name in asr-server translate-server; do
   file="$ROOT/results/$name.pid"
   if [[ -f "$file" ]]; then
@@ -11,4 +11,3 @@ for name in asr-server translate-server; do
   fi
 done
 echo "Remote model services stopped."
-

@@ -4,7 +4,7 @@ set -euo pipefail
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 BASE_URL="${BASE_URL:-http://localhost:8080}"
 RESULTS="$ROOT/acceptance/latest-results"
-TEMP_DIR="$(mktemp -d "${TMPDIR:-/tmp}/vibeathon-quality.XXXXXX")"
+TEMP_DIR="$(mktemp -d "${TMPDIR:-/tmp}/openstreamtranslate-quality.XXXXXX")"
 trap 'rm -rf -- "$TEMP_DIR"' EXIT
 
 mkdir -p "$RESULTS"

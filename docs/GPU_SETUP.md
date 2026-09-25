@@ -23,11 +23,11 @@ CUDA, llama.cpp y pesos que se usará en producción.
 
 ## Layout esperado
 
-Por defecto los scripts usan `~/vibeathon-benchmark`; se puede cambiar con
-`REMOTE_ROOT` en el cliente y `VIBEATHON_REMOTE_ROOT` en el host:
+Por defecto los scripts usan `~/openstreamtranslate-runtime`; se puede cambiar con
+`REMOTE_ROOT` en el cliente y `OPENSTREAMTRANSLATE_REMOTE_ROOT` en el host:
 
 ```text
-vibeathon-benchmark/
+openstreamtranslate-runtime/
 ├── .venv/bin/python
 ├── models/translategemma-4b-it.Q8_0.gguf
 ├── remote/
@@ -43,7 +43,7 @@ Las rutas no son obligatorias. `remote/start-services.sh` acepta:
 
 | Variable | Descripción |
 |---|---|
-| `VIBEATHON_REMOTE_ROOT` | raíz del runtime |
+| `OPENSTREAMTRANSLATE_REMOTE_ROOT` | raíz del runtime |
 | `TRANSLATION_MODEL_PATH` | GGUF de TranslateGemma |
 | `LLAMA_DIR` | bibliotecas de llama.cpp |
 | `CUDART_DIR` | runtime CUDA usado por el build de llama.cpp |
@@ -57,8 +57,8 @@ Las rutas no son obligatorias. `remote/start-services.sh` acepta:
 Creá un entorno Python 3.11 o 3.12 e instalá:
 
 ```bash
-python3 -m venv ~/vibeathon-benchmark/.venv
-~/vibeathon-benchmark/.venv/bin/pip install \
+python3 -m venv ~/openstreamtranslate-runtime/.venv
+~/openstreamtranslate-runtime/.venv/bin/pip install \
   faster-whisper==1.2.0 \
   fastapi==0.116.1 \
   uvicorn==0.35.0 \
@@ -92,7 +92,7 @@ condiciones pueden cambiar. Uso una conversión GGUF legítima de TranslateGemma
 ```bash
 export REMOTE_HOST=user@gpu-host
 export REMOTE_SSH_PORT=22
-export REMOTE_ROOT=vibeathon-benchmark
+export REMOTE_ROOT=openstreamtranslate-runtime
 
 make remote-sync
 make remote-start
@@ -119,8 +119,8 @@ nvidia-smi
 Los logs quedan en:
 
 ```text
-~/vibeathon-benchmark/results/asr-server.log
-~/vibeathon-benchmark/results/translate-server.log
+~/openstreamtranslate-runtime/results/asr-server.log
+~/openstreamtranslate-runtime/results/translate-server.log
 ```
 
 ## Seguridad

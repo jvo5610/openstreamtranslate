@@ -14,7 +14,7 @@ MODEL_NAME = os.getenv("ASR_MODEL", "large-v3-turbo")
 WORKERS = int(os.getenv("ASR_WORKERS", "10"))
 COMPUTE_TYPE = os.getenv("ASR_COMPUTE_TYPE", "float16")
 
-app = FastAPI(title="Vibeathon ASR")
+app = FastAPI(title="OpenStreamTranslate ASR")
 model = WhisperModel(MODEL_NAME, device="cuda", compute_type=COMPUTE_TYPE, num_workers=WORKERS)
 slots = asyncio.Semaphore(WORKERS)
 

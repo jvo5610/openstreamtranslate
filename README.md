@@ -116,7 +116,7 @@ No hay hostnames personales en el repositorio. Indica tu servidor y, si no es
 ```bash
 export REMOTE_HOST=user@gpu-host
 export REMOTE_SSH_PORT=22
-export REMOTE_ROOT=vibeathon-benchmark
+export REMOTE_ROOT=openstreamtranslate-runtime
 ```
 
 Sincroniza el servicio y enciende los modelos:

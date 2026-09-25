@@ -23,7 +23,7 @@ from .pipeline import CaptionPipeline, normalize_audio, pcm16_to_wav
 
 
 STATIC = Path(__file__).parent / "static"
-SIMULATOR_DIR = Path("/tmp/vibeathon-live-simulator")
+SIMULATOR_DIR = Path("/tmp/openstreamtranslate-simulator")
 UPDATE_SECONDS = float(os.getenv("LIVE_UPDATE_SECONDS", "1.5"))
 FINAL_SECONDS = float(os.getenv("LIVE_FINAL_SECONDS", "3"))
 MAX_FINAL_SECONDS = float(os.getenv("LIVE_MAX_FINAL_SECONDS", "4.5"))
@@ -57,43 +57,47 @@ DEFAULT_GLOSSARY_TERMS = (
     "SSE",
     "Kafka",
 )
-LOGGER = logging.getLogger("vibeathon.events")
+LOGGER = logging.getLogger("openstreamtranslate.events")
 LOGGER.setLevel(logging.INFO)
 if not LOGGER.handlers:
     log_handler = logging.StreamHandler()
     log_handler.setFormatter(logging.Formatter("%(message)s"))
     LOGGER.addHandler(log_handler)
 LOGGER.propagate = False
-CAPTIONS = Counter("vibeathon_captions_total", "Caption events", ["source", "target", "final"])
-ACTIVE_SSE = Gauge("vibeathon_sse_connections", "Active audience SSE connections")
-ACTIVE_STREAMS = Gauge("vibeathon_active_streams", "Active audio sources")
+CAPTIONS = Counter("openstreamtranslate_captions_total", "Caption events", ["source", "target", "final"])
+ACTIVE_SSE = Gauge("openstreamtranslate_sse_connections", "Active audience SSE connections")
+ACTIVE_STREAMS = Gauge("openstreamtranslate_active_streams", "Active audio sources")
 MODEL_LATENCY = Histogram(
-    "vibeathon_model_latency_seconds",
+    "openstreamtranslate_model_latency_seconds",
     "Combined ASR and translation latency",
     ["source", "target"],
     buckets=(0.1, 0.25, 0.5, 0.75, 1, 1.5, 2, 3, 5, 10),
 )
 CAPTION_LAG = Histogram(
-    "vibeathon_caption_lag_seconds",
+    "openstreamtranslate_caption_lag_seconds",
     "Elapsed live-stream time beyond the caption audio end",
     ["source", "target"],
     buckets=(0.25, 0.5, 0.75, 1, 1.5, 2, 3, 4, 5, 7, 10),
 )
 SKIPPED_UPDATES = Counter(
-    "vibeathon_skipped_caption_updates_total",
+    "openstreamtranslate_skipped_caption_updates_total",
     "Obsolete interim hypotheses skipped to keep a stream near real time",
 )
 CAPTION_PROCESSING_ERRORS = Counter(
-    "vibeathon_caption_processing_errors_total",
+    "openstreamtranslate_caption_processing_errors_total",
     "Caption chunks skipped after model retries were exhausted",
     ["source", "target"],
 )
 BROKER_PUBLISH = Histogram(
-    "vibeathon_broker_publish_seconds",
+    "openstreamtranslate_broker_publish_seconds",
     "Redis history and fan-out publish latency",
     buckets=(0.001, 0.0025, 0.005, 0.01, 0.025, 0.05, 0.1, 0.25, 0.5),
 )
-SIMULATIONS = Counter("vibeathon_simulations_total", "Server-side stream simulations", ["source", "target"])
+SIMULATIONS = Counter(
+    "openstreamtranslate_simulations_total",
+    "Server-side stream simulations",
+    ["source", "target"],
+)
 
 
 def log_event(event: str, **fields: object) -> None:

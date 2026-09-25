@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-ROOT="${VIBEATHON_REMOTE_ROOT:-$HOME/vibeathon-benchmark}"
+ROOT="${OPENSTREAMTRANSLATE_REMOTE_ROOT:-$HOME/openstreamtranslate-runtime}"
 RESULTS="$ROOT/results"
 LLAMA_DIR="${LLAMA_DIR:-$ROOT/tools/llama/llama-b11175}"
 CUDART_DIR="${CUDART_DIR:-$ROOT/tools/llama/cudart-llama-b11175-bin-ubuntu-cuda-12.8-x64}"

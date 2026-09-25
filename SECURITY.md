@@ -1,6 +1,6 @@
 # Security policy
 
-This hackathon prototype is intended for controlled conference infrastructure.
+This reference implementation is intended for controlled conference infrastructure.
 
 - Keep ASR and translation bound to loopback or a private cluster network.
 - Terminate TLS and authenticate producer WebSockets at the ingress in

@@ -19,14 +19,14 @@ SOURCE_LANGUAGE = os.getenv("SOURCE_LANGUAGE", "en")
 TARGET_LANGUAGE = os.getenv("TARGET_LANGUAGE", "es")
 LANGUAGE_NAMES = {"en": "English", "es": "Spanish"}
 RETRYABLE_STATUS_CODES = {408, 429, 500, 502, 503, 504}
-LOGGER = logging.getLogger("vibeathon.model_requests")
+LOGGER = logging.getLogger("openstreamtranslate.model_requests")
 MODEL_RETRIES = Counter(
-    "vibeathon_model_request_retries_total",
+    "openstreamtranslate_model_request_retries_total",
     "Retry attempts for transient model-service failures",
     ["service", "reason"],
 )
 MODEL_FAILURES = Counter(
-    "vibeathon_model_request_failures_total",
+    "openstreamtranslate_model_request_failures_total",
     "Model-service requests that exhausted their retry budget",
     ["service", "reason"],
 )

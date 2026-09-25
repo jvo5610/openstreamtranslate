@@ -1,3 +1,5 @@
+name: openstreamtranslate
+
 services:
   redis:
     image: redis:7.4-alpine
@@ -39,7 +41,7 @@ services:
     extra_hosts:
       - "host.docker.internal:host-gateway"
     volumes:
-      - simulator-data:/tmp/vibeathon-live-simulator
+      - simulator-data:/tmp/openstreamtranslate-simulator
     healthcheck:
       test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8080/api/health', timeout=3)"]
       interval: 10s
