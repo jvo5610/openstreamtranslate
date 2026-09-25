@@ -121,7 +121,7 @@ button, a, select, label { -webkit-tap-highlight-color: transparent; }
 .embed-caption span { padding: .1em .35em .18em; border-radius: .12em; background: rgba(0,0,0,.78); box-decoration-break: clone; -webkit-box-decoration-break: clone; }
 
 @media (max-width: 600px) {
-  .embed-caption { left: 3vw; right: 3vw; bottom: 9vh; font-size: clamp(19px, 6vw, 24px); }
+  .embed-caption { left: 2vw; right: 2vw; bottom: 9vh; font-size: clamp(15px, 4.2vw, 18px); line-height: 1.18; }
 }
 
 @keyframes signal { to { height: 6px; opacity: .5; } }
