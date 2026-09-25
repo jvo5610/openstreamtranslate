@@ -75,6 +75,17 @@ httpx.post(
     data={"language": "en"},
     timeout=120,
 ).raise_for_status()
+httpx.post(
+    "http://127.0.0.1:18080/completion",
+    json={
+        "prompt": "<start_of_turn>user\nTranslate from English to Spanish. Output only the translation.\nReady.<end_of_turn>\n<start_of_turn>model\n",
+        "n_predict": 16,
+        "temperature": 0,
+        "stop": ["<end_of_turn>"],
+        "cache_prompt": True,
+    },
+    timeout=120,
+).raise_for_status()
 PY
 
 echo "ASR and translation services are healthy."

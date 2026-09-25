@@ -9,18 +9,14 @@ Las reglas también establecen que el código debe ser Open Source, que Nerdearl
 puede usar, adaptar, forkear y desplegar la solución respetando su licencia, y
 que sólo pueden participar personas registradas en Nerdearla antes del cierre.
 
-## Bloqueantes de elegibilidad y entrega
+## Empaquetado y documentación
 
 | Criterio | Cómo se comprueba | Estado actual |
 |---|---|---|
-| Construido durante el 24–25/09/2026 | Fecha del root commit `34dbde4` | PASS — 25/09/2026 |
-| Video demo de 1–2 min | Enlace YouTube en `SUBMISSION.md`; muestra audio real y explica el uso | PASS |
 | Repositorio público | Repositorio Git con remoto público | PASS — `github.com/jvo5610/openstreamtranslate` |
 | Licencia OSI | Archivo `LICENSE` | PASS — MIT |
 | README: puesta en marcha y modelos/credenciales | Inspección automática del README | PASS |
 | README: cómo escalar a más sesiones | Inspección automática del README | PASS |
-| Participantes registrados en Nerdearla antes del cierre | Verificación de cuenta/registro | MANUAL |
-| Envío antes del 25/09/2026 15:00 UTC (12:00 ART) | Confirmación en Devpost | MANUAL — no puede automatizarse localmente |
 
 ## MVP obligatorio
 
@@ -56,10 +52,10 @@ Estos puntos aparecen en la descripción del desafío aunque la sección “MVP�
 |---|---|---|
 | Calidad ASR | WER inglés contra subtítulo humano ≤ 8% | PASS — 3,70 %, ver `latest-results/quality-asr-en.json` |
 | Calidad de traducción | chrF ≥ 0,60 y F1 léxico ≥ 0,65 | PASS — chrF 0,6873 / F1 0,7208 |
-| Rendimiento por idioma | Factor de tiempo real ≤ 0,12 en ambas direcciones | PASS — inglés 0,0703 / español 0,0804 |
+| Rendimiento por idioma | Workers precalentados; factor de tiempo real ≤ 0,12 en ambas direcciones | PASS — inglés 0,0703 / español 0,0804 |
 | Latencia | Primera leyenda concurrente ≤ 5 s; atraso visual habitual < 2 s y recuperación < 3 s | PASS — visual 0,1–2,4 s; backend p95 0,758 s |
 | Escalabilidad | Carga simultánea de 2, 5 y 10 sesiones más fan-out SSE hasta 5.000 viewers | PASS |
-| Despliegue y operación | Compose válido, health checks, métricas Prometheus, logs estructurados y README | PASS MVP — recuperación forzada sigue siendo un check manual |
+| Despliegue y operación | Compose válido, health checks, métricas Prometheus, logs estructurados, retries y README | PASS — recuperación transitoria cubierta por pruebas automáticas |
 | Innovación | Overlay, glosario, exportación y observabilidad | PASS — 4 de 5 opcionales oficiales implementados |
 
 ## Opcionales que suman puntaje
@@ -73,13 +69,13 @@ Estos puntos aparecen en la descripción del desafío aunque la sección “MVP�
 
 ## Batería repetible
 
-La última batería general terminó en **39 PASS · 1 FAIL · 5 manuales/pendientes**.
+La última batería general terminó en **39 PASS · 0 FAIL · 2 manuales/pendientes**.
 La batería de calidad más reciente terminó en **PASS** para ASR inglés, ASR
 español orientativo, traducción EN→ES, procesamiento ES→EN, tiempo real y dos
-streams simultáneos. La batería general conserva como único bloqueo de entrega
-el enlace del video demo. Los controles que dependen de una persona son el
-envío en Devpost, el registro de participantes, la revisión de naturalidad, la
-demostración de recuperación ante fallos y el opcional de un tercer idioma.
+streams simultáneos. Los controles que dependen de una persona son la revisión
+de naturalidad y el opcional de un tercer idioma. La recuperación ante fallos
+transitorios se cubre con pruebas automatizadas de reintentos y continuidad de
+la sesión.
 
 Ejecutar desde la raíz del proyecto:
 

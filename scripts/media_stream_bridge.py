@@ -5,6 +5,7 @@ import argparse
 import asyncio
 import json
 import signal
+from pathlib import Path
 
 from websockets.asyncio.client import connect
 
@@ -23,6 +24,7 @@ async def bridge_once(input_url: str, caption_ws: str, chunk_bytes: int) -> None
         if ready.get("type") != "ready":
             raise RuntimeError(f"Respuesta WebSocket inesperada: {ready}")
 
+        realtime_input = ["-re"] if Path(input_url).expanduser().is_file() else []
         process = await asyncio.create_subprocess_exec(
             "ffmpeg",
             "-nostdin",
@@ -33,6 +35,7 @@ async def bridge_once(input_url: str, caption_ws: str, chunk_bytes: int) -> None
             "nobuffer",
             "-flags",
             "low_delay",
+            *realtime_input,
             "-i",
             input_url,
             "-vn",

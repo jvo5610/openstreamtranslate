@@ -3,10 +3,14 @@ from __future__ import annotations
 import io
 import os
 import asyncio
+import json
+import logging
+import random
 import time
 import wave
 
 import httpx
+from prometheus_client import Counter
 
 
 ASR_URL = os.getenv("ASR_URL", "http://host.docker.internal:18081").rstrip("/")
@@ -14,6 +18,18 @@ TRANSLATION_URL = os.getenv("TRANSLATION_URL", "http://host.docker.internal:1808
 SOURCE_LANGUAGE = os.getenv("SOURCE_LANGUAGE", "en")
 TARGET_LANGUAGE = os.getenv("TARGET_LANGUAGE", "es")
 LANGUAGE_NAMES = {"en": "English", "es": "Spanish"}
+RETRYABLE_STATUS_CODES = {408, 429, 500, 502, 503, 504}
+LOGGER = logging.getLogger("vibeathon.model_requests")
+MODEL_RETRIES = Counter(
+    "vibeathon_model_request_retries_total",
+    "Retry attempts for transient model-service failures",
+    ["service", "reason"],
+)
+MODEL_FAILURES = Counter(
+    "vibeathon_model_request_failures_total",
+    "Model-service requests that exhausted their retry budget",
+    ["service", "reason"],
+)
 
 
 def pcm16_to_wav(pcm: bytes, sample_rate: int = 16000) -> bytes:
@@ -85,8 +101,33 @@ def translation_prompt(
 
 
 class CaptionPipeline:
-    def __init__(self) -> None:
-        self.client = httpx.AsyncClient(timeout=httpx.Timeout(120, connect=5))
+    def __init__(
+        self,
+        max_attempts: int | None = None,
+        request_timeout_seconds: float | None = None,
+        retry_base_seconds: float | None = None,
+        retry_max_seconds: float | None = None,
+    ) -> None:
+        request_timeout = max(
+            1,
+            request_timeout_seconds
+            if request_timeout_seconds is not None
+            else float(os.getenv("MODEL_REQUEST_TIMEOUT_SECONDS", "30")),
+        )
+        self.client = httpx.AsyncClient(timeout=httpx.Timeout(request_timeout, connect=5))
+        self.max_attempts = max(1, max_attempts or int(os.getenv("MODEL_MAX_ATTEMPTS", "3")))
+        self.retry_base_seconds = max(
+            0,
+            retry_base_seconds
+            if retry_base_seconds is not None
+            else float(os.getenv("MODEL_RETRY_BASE_SECONDS", "0.25")),
+        )
+        self.retry_max_seconds = max(
+            self.retry_base_seconds,
+            retry_max_seconds
+            if retry_max_seconds is not None
+            else float(os.getenv("MODEL_RETRY_MAX_SECONDS", "2")),
+        )
 
     async def close(self) -> None:
         await self.client.aclose()
@@ -103,6 +144,45 @@ class CaptionPipeline:
         result["ok"] = all(service["ok"] for service in result.values())
         return result
 
+    async def _post_with_retry(self, service: str, url: str, **kwargs) -> httpx.Response:
+        last_error: Exception | None = None
+        for attempt in range(1, self.max_attempts + 1):
+            reason = "transport"
+            try:
+                response = await self.client.post(url, **kwargs)
+                response.raise_for_status()
+                return response
+            except httpx.HTTPStatusError as exc:
+                if exc.response.status_code not in RETRYABLE_STATUS_CODES:
+                    raise
+                last_error = exc
+                reason = f"http_{exc.response.status_code}"
+            except httpx.TransportError as exc:
+                last_error = exc
+
+            if attempt >= self.max_attempts:
+                MODEL_FAILURES.labels(service=service, reason=reason).inc()
+                assert last_error is not None
+                raise last_error
+
+            MODEL_RETRIES.labels(service=service, reason=reason).inc()
+            exponential = min(
+                self.retry_max_seconds,
+                self.retry_base_seconds * (2 ** (attempt - 1)),
+            )
+            delay = min(self.retry_max_seconds, exponential * random.uniform(0.75, 1.25))
+            LOGGER.warning(json.dumps({
+                "event": "model_request_retry",
+                "service": service,
+                "attempt": attempt,
+                "max_attempts": self.max_attempts,
+                "reason": reason,
+                "delay_seconds": round(delay, 3),
+            }))
+            await asyncio.sleep(delay)
+
+        raise RuntimeError("unreachable")
+
     async def transcribe(
         self,
         audio: bytes,
@@ -112,7 +192,8 @@ class CaptionPipeline:
         hotwords: str = "",
     ) -> dict:
         started = time.perf_counter()
-        response = await self.client.post(
+        response = await self._post_with_retry(
+            "asr",
             f"{ASR_URL}/transcribe",
             files={"file": (filename, audio, "application/octet-stream")},
             data={"language": source_language, "prompt": prompt, "hotwords": hotwords},
@@ -132,7 +213,8 @@ class CaptionPipeline:
         if not text.strip():
             return {"text": "", "roundtrip_seconds": 0}
         started = time.perf_counter()
-        response = await self.client.post(
+        response = await self._post_with_retry(
+            "translation",
             f"{TRANSLATION_URL}/completion",
             json={
                 "prompt": translation_prompt(text, source_language, target_language, glossary),

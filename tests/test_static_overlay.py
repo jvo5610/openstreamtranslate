@@ -23,6 +23,8 @@ class OverlayTransparencyTests(unittest.TestCase):
         self.assertIn('event.data.action === "pause"', script)
         self.assertIn('event.data.action === "resume-live"', script)
         self.assertIn('dataset.playbackState = "paused"', script)
+        self.assertIn("playbackLatencyMs - captionLagMs", script)
+        self.assertIn("events?replay=false", script)
 
 
 if __name__ == "__main__":

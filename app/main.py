@@ -12,7 +12,7 @@ from contextlib import asynccontextmanager
 from pathlib import Path
 
 import redis.asyncio as redis
-from fastapi import FastAPI, File, Form, Header, HTTPException, UploadFile, WebSocket, WebSocketDisconnect
+from fastapi import FastAPI, File, Form, Header, HTTPException, Query, UploadFile, WebSocket, WebSocketDisconnect
 from starlette.background import BackgroundTask
 from fastapi.responses import FileResponse, JSONResponse, Response, StreamingResponse
 from fastapi.staticfiles import StaticFiles
@@ -28,6 +28,7 @@ UPDATE_SECONDS = float(os.getenv("LIVE_UPDATE_SECONDS", "1.5"))
 FINAL_SECONDS = float(os.getenv("LIVE_FINAL_SECONDS", "3"))
 MAX_FINAL_SECONDS = float(os.getenv("LIVE_MAX_FINAL_SECONDS", "4.5"))
 OVERLAP_SECONDS = float(os.getenv("LIVE_OVERLAP_SECONDS", "0.75"))
+CONTEXT_CHARACTERS = max(100, int(os.getenv("LIVE_CONTEXT_CHARACTERS", "700")))
 SIMULATOR_START_DELAY_SECONDS = float(os.getenv("SIMULATOR_START_DELAY_SECONDS", "2"))
 REDIS_URL = os.getenv("REDIS_URL", "redis://redis:6379/0")
 SAMPLE_RATE = 16000
@@ -81,6 +82,11 @@ CAPTION_LAG = Histogram(
 SKIPPED_UPDATES = Counter(
     "vibeathon_skipped_caption_updates_total",
     "Obsolete interim hypotheses skipped to keep a stream near real time",
+)
+CAPTION_PROCESSING_ERRORS = Counter(
+    "vibeathon_caption_processing_errors_total",
+    "Caption chunks skipped after model retries were exhausted",
+    ["source", "target"],
 )
 BROKER_PUBLISH = Histogram(
     "vibeathon_broker_publish_seconds",
@@ -535,6 +541,7 @@ class LiveSessionProcessor:
         self.max_updates_per_group = max(self.updates_per_group, round(MAX_FINAL_SECONDS / UPDATE_SECONDS))
         self.group_updates = 0
         self.last_processed_end = 0
+        self.buffer_start_bytes = 0
         self.last_caption: dict | None = None
         self.task: asyncio.Task | None = None
         self.started_at_monotonic = 0.0
@@ -544,6 +551,10 @@ class LiveSessionProcessor:
         self.task = asyncio.create_task(self._process_audio())
 
     async def feed(self, pcm: bytes) -> None:
+        if self.task and self.task.done():
+            error = self.task.exception()
+            if error:
+                raise RuntimeError("Caption processor stopped unexpectedly") from error
         self.buffer.extend(pcm)
         self.audio_ready.set()
 
@@ -571,7 +582,7 @@ class LiveSessionProcessor:
         result = await self.pipeline.process(
             pcm16_to_wav(pcm),
             f"live-{self.sequence}.wav",
-            self.context[-700:],
+            self.context[-CONTEXT_CHARACTERS:],
             self.source_language,
             self.target_language,
             self.glossary,
@@ -582,7 +593,7 @@ class LiveSessionProcessor:
         has_stable_ending = text.endswith((".", "?", "!")) and not text.endswith("...")
         final = final_candidate and (has_stable_ending or force_final)
         if final:
-            self.context = f"{self.context} {text}"
+            self.context = f"{self.context} {text}"[-CONTEXT_CHARACTERS:]
         caption_lag = max(0.0, time.monotonic() - self.started_at_monotonic - end_seconds)
         self.sequence += 1
         self.last_caption = {
@@ -599,6 +610,38 @@ class LiveSessionProcessor:
         }
         await self.callback(self.last_caption)
         return final
+
+    async def _emit_chunk_resilient(self, *args, **kwargs) -> bool:
+        try:
+            return await self._emit_chunk(*args, **kwargs)
+        except asyncio.CancelledError:
+            raise
+        except Exception as exc:
+            CAPTION_PROCESSING_ERRORS.labels(
+                source=self.source_language,
+                target=self.target_language,
+            ).inc()
+            log_event(
+                "caption_chunk_failed",
+                source_language=self.source_language,
+                target_language=self.target_language,
+                error=f"{type(exc).__name__}: {exc}",
+            )
+            return False
+
+    def _audio_seconds(self, local_offset: int) -> float:
+        return (self.buffer_start_bytes + local_offset) / BYTES_PER_SECOND
+
+    def _compact_buffer(self, trim_bytes: int) -> None:
+        """Discard committed PCM while retaining local indexes and live-clock time."""
+        trim_bytes = max(0, min(trim_bytes, len(self.buffer)))
+        if not trim_bytes:
+            return
+        del self.buffer[:trim_bytes]
+        self.buffer_start_bytes += trim_bytes
+        self.group_start = max(0, self.group_start - trim_bytes)
+        self.next_emit = max(0, self.next_emit - trim_bytes)
+        self.last_processed_end = max(0, self.last_processed_end - trim_bytes)
 
     async def _process_audio(self) -> None:
         while True:
@@ -621,32 +664,33 @@ class LiveSessionProcessor:
                 self.group_updates = available_updates
                 final_candidate = self.group_updates >= self.updates_per_group
                 force_final = self.group_updates >= self.max_updates_per_group
-                final = await self._emit_chunk(
+                final = await self._emit_chunk_resilient(
                     bytes(self.buffer[self.group_start:end]),
                     final_candidate,
                     force_final,
-                    self.group_start / BYTES_PER_SECOND,
-                    end / BYTES_PER_SECOND,
+                    self._audio_seconds(self.group_start),
+                    self._audio_seconds(end),
                 )
                 self.last_processed_end = end
-                if final:
+                if final or force_final:
                     overlap = int(OVERLAP_SECONDS * BYTES_PER_SECOND)
                     self.group_start = max(0, end - overlap)
                     self.group_updates = 0
                     # Keep commit points on the live clock. The overlap is context,
                     # not a reason to emit the next caption earlier.
                     self.next_emit = end + update_bytes
+                    self._compact_buffer(self.group_start)
                 else:
                     self.next_emit = end + update_bytes
 
             if self.stopped:
                 if len(self.buffer) > self.last_processed_end + BYTES_PER_SECOND // 2:
-                    await self._emit_chunk(
+                    await self._emit_chunk_resilient(
                         bytes(self.buffer[self.group_start:]),
                         True,
                         True,
-                        self.group_start / BYTES_PER_SECOND,
-                        len(self.buffer) / BYTES_PER_SECOND,
+                        self._audio_seconds(self.group_start),
+                        self._audio_seconds(len(self.buffer)),
                     )
                 elif self.last_caption and not self.last_caption["final"]:
                     self.sequence += 1
@@ -863,6 +907,7 @@ async def publish_external_caption(session_id: str, caption: ExternalCaption):
 async def session_events(
     session_id: str,
     last_event_id: str | None = Header(default=None, alias="Last-Event-ID"),
+    replay_history: bool = Query(default=True, alias="replay"),
 ):
     require_session_id(session_id)
 
@@ -870,7 +915,14 @@ async def session_events(
     queue: asyncio.Queue | None = None
     try:
         queue = await app.state.fanout.add(session_id)
-        replay = await app.state.broker.replay(session_id, last_event_id)
+        # A player joining a live stream must not receive captions left over
+        # from an earlier run of the same stable session. Reconnects still use
+        # Last-Event-ID so a short network interruption does not lose events.
+        replay = (
+            await app.state.broker.replay(session_id, last_event_id)
+            if replay_history or last_event_id
+            else []
+        )
     except BaseException:
         ACTIVE_SSE.dec()
         if queue is not None:

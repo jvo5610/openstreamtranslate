@@ -11,6 +11,8 @@ let currentDisplay;
 let lastSequence = 0;
 let lastConfirmedRaw = "";
 let schedulerPaused = false;
+let playbackLatencyMs = 0;
+const incomingTimers = new Set();
 const displayedDrafts = new Map();
 const finalizedGroups = new Set();
 document.documentElement.dataset.playbackState = "live";
@@ -125,8 +127,27 @@ function resetCaptionScheduler() {
   lastConfirmedRaw = "";
   displayedDrafts.clear();
   finalizedGroups.clear();
+  for (const timer of incomingTimers) clearTimeout(timer);
+  incomingTimers.clear();
   caption.hidden = true;
   caption.innerHTML = "";
+}
+
+function queueCaptionForPlayback(data) {
+  const captionLagMs = Math.max(0, Number(data.latency?.caption_lag || 0) * 1000);
+  // The model listens at the media ingress while a HLS viewer is behind the
+  // live edge. Wait only for the part of the player buffer not already spent
+  // doing ASR + translation. This prevents captions from preceding speech.
+  const waitMs = Math.max(0, playbackLatencyMs - captionLagMs);
+  if (waitMs < 40) {
+    scheduleCaption(data);
+    return;
+  }
+  const timer = setTimeout(() => {
+    incomingTimers.delete(timer);
+    scheduleCaption(data);
+  }, waitMs);
+  incomingTimers.add(timer);
 }
 
 function scheduleCaption(data) {
@@ -172,7 +193,10 @@ window.addEventListener("message", event => {
   if (event.source !== window.parent || event.data?.type !== "caption-control") return;
   if (event.data.action === "pause") pauseCaptionScheduler();
   if (event.data.action === "resume-live") resumeCaptionScheduler();
+  if (event.data.action === "set-playback-latency") {
+    playbackLatencyMs = Math.max(0, Math.min(30000, Number(event.data.milliseconds) || 0));
+  }
 });
 
-const events = new EventSource(`/api/sessions/${encodeURIComponent(sessionId)}/events`);
-events.addEventListener("caption", event => scheduleCaption(JSON.parse(event.data)));
+const events = new EventSource(`/api/sessions/${encodeURIComponent(sessionId)}/events?replay=false`);
+events.addEventListener("caption", event => queueCaptionForPlayback(JSON.parse(event.data)));

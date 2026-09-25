@@ -170,7 +170,7 @@ Si ASR y traducción ya están desplegados, no se necesitan los scripts SSH.
 Copia `.env.example` a `.env`, cambia `ASR_URL` y `TRANSLATION_URL`, y ejecuta
 solamente `docker compose up --build -d`.
 
-## Cómo probar la demo
+## Cómo probar el servicio localmente
 
 1. Entra a <http://localhost:8080/studio>.
 2. Elige **Main Stage** y la dirección EN→ES o ES→EN.
@@ -215,7 +215,7 @@ PUT /api/sessions/{id}/glossary
 
 ## Cómo lo integraría con un stream real
 
-Diseñé el front como una demostración, no como una dependencia obligatoria. En
+Diseñé el front como una implementación de referencia, no como una dependencia obligatoria. En
 producción mantendría el video en el media server o CDN y derivaría solamente el
 audio hacia este servicio:
 
@@ -264,7 +264,7 @@ el player, como hace YouTube.
 Para el laboratorio elegí HLS de baja latencia porque el stream RTMP transporta
 audio AAC y MediaMTX puede entregarlo por HLS sin transcodificación adicional.
 WebRTC sigue disponible; para usarlo con audio tendría que convertir AAC a Opus.
-Prefiero hacer explícito ese costo antes que presentar una demo WebRTC sin sonido.
+Prefiero hacer explícito ese costo antes que presentar una implementación WebRTC sin sonido.
 
 ## Decisiones técnicas que tomé
 
@@ -336,6 +336,11 @@ ingress real antes de fijar capacidad de producción.
 | `LIVE_FINAL_SECONDS` | `3` | Objetivo de bloque confirmado |
 | `LIVE_MAX_FINAL_SECONDS` | `4.5` | Cierre forzado |
 | `LIVE_OVERLAP_SECONDS` | `0.75` | Contexto acústico solapado |
+| `LIVE_CONTEXT_CHARACTERS` | `700` | Historial textual móvil enviado a ASR |
+| `MODEL_MAX_ATTEMPTS` | `3` | Intentos ante fallas transitorias de ASR/traducción |
+| `MODEL_REQUEST_TIMEOUT_SECONDS` | `30` | Timeout total por intento de inferencia |
+| `MODEL_RETRY_BASE_SECONDS` | `0.25` | Backoff inicial de inferencia |
+| `MODEL_RETRY_MAX_SECONDS` | `2` | Tope del backoff de inferencia |
 | `REDIS_URL` | `redis://redis:6379/0` | Broker compartido |
 | `SIMULATOR_START_DELAY_SECONDS` | `2` | Margen para sincronizar reproductores |
 
@@ -343,9 +348,14 @@ ingress real antes de fijar capacidad de producción.
 
 - Expongo `/api/health` para revisar Redis, ASR y traducción por separado.
 - Expongo `/metrics` para medir streams, SSE activos, captions, latencia de modelos, atraso del
-  caption, tiempo de publicación al broker y parciales descartados.
+  caption, tiempo de publicación al broker, reintentos, errores agotados y parciales descartados.
 - Escribo en `docker compose logs app` JSON por sesión, idioma, secuencia, latencia,
-  atraso y cantidad de términos del glosario.
+  atraso, reintentos y cantidad de términos del glosario.
+
+El audio confirmado se elimina del buffer conservando sólo el solapamiento
+acústico, mientras un contador absoluto mantiene los timestamps de la charla.
+El contexto textual también está acotado; por eso una sesión larga no acumula
+todo el PCM ni toda la transcripción en memoria.
 
 Las métricas no aparecen en la vista pública; están destinadas a Prometheus y
 al equipo de producción.
@@ -369,9 +379,9 @@ latencia, WER ≤ 8 %, 2/5/10 fuentes, dos idiomas simultáneos, 100/1.000 viewe
 y replay SSE. Los resultados quedan en `acceptance/latest-results/`.
 
 La trazabilidad completa requisito → prueba → estado está en
-[`acceptance/CRITERIA.md`](acceptance/CRITERIA.md). Los únicos pasos que no puede
-resolver una batería local son publicar el repositorio, subir el video de 1–2
-minutos y enviar el formulario de Devpost.
+[`acceptance/CRITERIA.md`](acceptance/CRITERIA.md). Los controles manuales
+restantes son la revisión humana de naturalidad y la evaluación de idiomas
+adicionales.
 
 ## Estructura del repositorio
 
@@ -382,7 +392,7 @@ samples/                dos videos y referencias de calidad
 scripts/                smoke, aceptación, carga y operación SSH
 acceptance/              matriz oficial y resultados medidos
 benchmarks/              comparación de modelos ASR
-docs/                    arquitectura, setup GPU y guion de demo
+docs/                    arquitectura, setup GPU y metodología de calidad
 compose.yaml             app + Redis
 ```
 
@@ -392,7 +402,7 @@ compose.yaml             app + Redis
 - La muestra española posee subtítulos automáticos de origen, por lo que
   presento su WER sólo como orientación. El gate estricto usa la referencia
   humana inglesa.
-- El simulador sirve video desde el contenedor sólo para la demo. En producción
+- El simulador sirve video desde el contenedor para pruebas locales. En producción
   debe usar media server/CDN y enviar una derivación de audio al WebSocket.
 - El prototipo soporta EN y ES. Antes de agregar portugués validaría ASR,
   traducción, velocidad de lectura y referencias humanas antes de declararlo.
