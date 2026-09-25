@@ -14,7 +14,7 @@ One GPU inference per stage. Accessible bilingual captions for every viewer.
 
 ## Public repository
 
-`PENDING: paste the public GitHub/GitLab URL here`
+https://github.com/jvo5610/vibeathon-live-captions
 
 ## Inspiration
 
@@ -58,9 +58,9 @@ made one Redis subscription feed all local SSE clients for a session.
 
 ## Accomplishments
 
-- 4.32% English WER on a real technical video with a human reference;
-- ten simultaneous sources with a 2.84 s maximum first-caption delay;
-- 1,000 viewers on one replica with 135 ms fan-out p95 and one shared event;
+- 3.70% English WER on a real technical video with a human reference;
+- ten simultaneous sources with a 2.72 s maximum first-caption delay;
+- 1,000 viewers on one replica with 133.1 ms fan-out p95 and one shared event;
 - English↔Spanish streams running simultaneously without cross-talk;
 - technical hotwords and exact translation mappings per talk;
 - no commercial inference API or per-viewer model cost.

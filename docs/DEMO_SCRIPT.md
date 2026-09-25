@@ -30,7 +30,7 @@ explicar que OBS/vMix lo consumen como Browser Source. Descargar el SRT desde
 Studio.
 
 **60–77 s — escala demostrada.** Superponer tres números: 10 sesiones, primera
-leyenda máxima 2,84 s; 1.000 viewers, p95 135 ms; WER 4,32 %. Explicar que la
+leyenda máxima 2,72 s; 1.000 viewers, p95 133,1 ms; WER 3,70 %. Explicar que la
 GPU trabaja por escenario y SSE distribuye el mismo evento a la audiencia.
 
 **77–90 s — cierre.** Mostrar el diagrama y cerrar con: “Open source, sin API

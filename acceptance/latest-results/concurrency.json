@@ -5,15 +5,15 @@
     {
       "sessions": 2,
       "successful_sessions": 2,
-      "wall_seconds": 6.628,
-      "first_caption_p50_seconds": 1.702,
-      "first_caption_max_seconds": 1.761,
+      "wall_seconds": 7.148,
+      "first_caption_p50_seconds": 1.817,
+      "first_caption_max_seconds": 1.822,
       "passed": true,
       "details": [
         {
           "session": 1,
           "captions": 5,
-          "first_caption_seconds": 1.761,
+          "first_caption_seconds": 1.812,
           "final_seen": true,
           "original_nonempty": true,
           "translation_nonempty": true,
@@ -23,7 +23,7 @@
         {
           "session": 2,
           "captions": 5,
-          "first_caption_seconds": 1.644,
+          "first_caption_seconds": 1.822,
           "final_seen": true,
           "original_nonempty": true,
           "translation_nonempty": true,
@@ -35,15 +35,15 @@
     {
       "sessions": 5,
       "successful_sessions": 5,
-      "wall_seconds": 7.713,
-      "first_caption_p50_seconds": 2.008,
-      "first_caption_max_seconds": 2.02,
+      "wall_seconds": 7.557,
+      "first_caption_p50_seconds": 2.151,
+      "first_caption_max_seconds": 2.164,
       "passed": true,
       "details": [
         {
           "session": 1,
           "captions": 5,
-          "first_caption_seconds": 1.998,
+          "first_caption_seconds": 2.138,
           "final_seen": true,
           "original_nonempty": true,
           "translation_nonempty": true,
@@ -53,7 +53,7 @@
         {
           "session": 2,
           "captions": 5,
-          "first_caption_seconds": 1.978,
+          "first_caption_seconds": 2.164,
           "final_seen": true,
           "original_nonempty": true,
           "translation_nonempty": true,
@@ -63,7 +63,7 @@
         {
           "session": 3,
           "captions": 5,
-          "first_caption_seconds": 2.02,
+          "first_caption_seconds": 2.151,
           "final_seen": true,
           "original_nonempty": true,
           "translation_nonempty": true,
@@ -73,7 +73,7 @@
         {
           "session": 4,
           "captions": 5,
-          "first_caption_seconds": 2.008,
+          "first_caption_seconds": 2.103,
           "final_seen": true,
           "original_nonempty": true,
           "translation_nonempty": true,
@@ -83,7 +83,7 @@
         {
           "session": 5,
           "captions": 5,
-          "first_caption_seconds": 2.016,
+          "first_caption_seconds": 2.151,
           "final_seen": true,
           "original_nonempty": true,
           "translation_nonempty": true,
@@ -95,15 +95,15 @@
     {
       "sessions": 10,
       "successful_sessions": 10,
-      "wall_seconds": 8.833,
-      "first_caption_p50_seconds": 2.756,
-      "first_caption_max_seconds": 2.839,
+      "wall_seconds": 9.546,
+      "first_caption_p50_seconds": 2.616,
+      "first_caption_max_seconds": 2.718,
       "passed": true,
       "details": [
         {
           "session": 1,
           "captions": 5,
-          "first_caption_seconds": 2.764,
+          "first_caption_seconds": 2.596,
           "final_seen": true,
           "original_nonempty": true,
           "translation_nonempty": true,
@@ -113,7 +113,7 @@
         {
           "session": 2,
           "captions": 5,
-          "first_caption_seconds": 2.839,
+          "first_caption_seconds": 2.596,
           "final_seen": true,
           "original_nonempty": true,
           "translation_nonempty": true,
@@ -123,7 +123,7 @@
         {
           "session": 3,
           "captions": 5,
-          "first_caption_seconds": 2.739,
+          "first_caption_seconds": 2.548,
           "final_seen": true,
           "original_nonempty": true,
           "translation_nonempty": true,
@@ -133,7 +133,7 @@
         {
           "session": 4,
           "captions": 5,
-          "first_caption_seconds": 2.767,
+          "first_caption_seconds": 2.624,
           "final_seen": true,
           "original_nonempty": true,
           "translation_nonempty": true,
@@ -143,7 +143,7 @@
         {
           "session": 5,
           "captions": 5,
-          "first_caption_seconds": 2.739,
+          "first_caption_seconds": 2.624,
           "final_seen": true,
           "original_nonempty": true,
           "translation_nonempty": true,
@@ -153,7 +153,7 @@
         {
           "session": 6,
           "captions": 5,
-          "first_caption_seconds": 2.823,
+          "first_caption_seconds": 2.702,
           "final_seen": true,
           "original_nonempty": true,
           "translation_nonempty": true,
@@ -163,7 +163,7 @@
         {
           "session": 7,
           "captions": 5,
-          "first_caption_seconds": 2.715,
+          "first_caption_seconds": 2.624,
           "final_seen": true,
           "original_nonempty": true,
           "translation_nonempty": true,
@@ -173,7 +173,7 @@
         {
           "session": 8,
           "captions": 5,
-          "first_caption_seconds": 2.748,
+          "first_caption_seconds": 2.596,
           "final_seen": true,
           "original_nonempty": true,
           "translation_nonempty": true,
@@ -183,7 +183,7 @@
         {
           "session": 9,
           "captions": 5,
-          "first_caption_seconds": 2.739,
+          "first_caption_seconds": 2.718,
           "final_seen": true,
           "original_nonempty": true,
           "translation_nonempty": true,
@@ -193,7 +193,7 @@
         {
           "session": 10,
           "captions": 5,
-          "first_caption_seconds": 2.775,
+          "first_caption_seconds": 2.608,
           "final_seen": true,
           "original_nonempty": true,
           "translation_nonempty": true,

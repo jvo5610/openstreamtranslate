@@ -227,7 +227,7 @@ fi
 curl -fsS -X DELETE "$BASE_URL/api/sessions/$export_session" >/dev/null 2>&1 || true
 rg -qi 'prometheus|/metrics' "$ROOT/app" "$ROOT/compose.yaml" \
   && pass 'Métricas operativas Prometheus' || todo 'Métricas operativas Prometheus'
-rg -qi 'pt-BR|portugu[eé]s|Portuguese' "$ROOT/app" "$ROOT/.env.example" "$ROOT/README.md" \
+rg -q 'SUPPORTED_LANGUAGES.*(pt|portugu)' "$ROOT/app/main.py" \
   && pass 'Idiomas adicionales' || todo 'Idiomas adicionales (por ejemplo, portugués)'
 
 printf '\nRESULTADO: %d PASS · %d FAIL · %d MANUAL/PENDIENTE\n' "$passed" "$failed" "$manual"

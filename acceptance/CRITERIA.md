@@ -1,17 +1,25 @@
 # Criterios de aceptación — Nerdearla Vibeathon 2026
 
-Fuente de verdad: [página oficial de la Vibeathon](https://nerdearla26.devpost.com/).
+Fuentes revisadas el 25/09/2026:
+
+- [Overview y requirements](https://nerdearla26.devpost.com/)
+- [Rules](https://nerdearla26.devpost.com/rules)
+
+Las reglas también establecen que el código debe ser Open Source, que Nerdearla
+puede usar, adaptar, forkear y desplegar la solución respetando su licencia, y
+que sólo pueden participar personas registradas en Nerdearla antes del cierre.
 
 ## Bloqueantes de elegibilidad y entrega
 
 | Criterio | Cómo se comprueba | Estado actual |
 |---|---|---|
-| Construido durante el 24–25/09/2026 | Historial del repositorio y fecha del primer commit | MANUAL — todavía no hay repositorio Git |
+| Construido durante el 24–25/09/2026 | Fecha del root commit `34dbde4` | PASS — 25/09/2026 |
 | Video demo de 1–2 min | Enlace YouTube en `SUBMISSION.md`; debe mostrar audio real y explicar uso | FAIL — falta grabarlo y enlazarlo |
 | Repositorio público | Repositorio Git con remoto público | FAIL — falta crearlo/publicarlo |
 | Licencia OSI | Archivo `LICENSE` | PASS — MIT |
 | README: puesta en marcha y modelos/credenciales | Inspección automática del README | PASS |
 | README: cómo escalar a más sesiones | Inspección automática del README | PASS |
+| Participantes registrados en Nerdearla antes del cierre | Verificación de cuenta/registro | MANUAL |
 | Envío antes del 25/09/2026 15:00 UTC (12:00 ART) | Confirmación en Devpost | MANUAL — no puede automatizarse localmente |
 
 ## MVP obligatorio
@@ -38,18 +46,18 @@ Estos puntos aparecen en la descripción del desafío aunque la sección “MVP�
 | Elegir sesión | PASS | Catálogo de escenarios y suscripción independiente |
 | Elegir idioma de transcripción | PASS | Botón CC dentro del reproductor: Off/Español/English, sin repetir inferencia |
 | Despliegue replicable y documentado | PASS MVP | Docker, Redis, health checks y estrategia de escalado documentados |
-| Fan-out sin reinferencia | PASS | 1.000 espectadores reciben el mismo evento con p95 135 ms; 5.000 con p95 1,169 s |
+| Fan-out sin reinferencia | PASS | 1.000 espectadores reciben el mismo evento con p95 133,1 ms; 5.000 con p95 1,169 s |
 | Recurso conectable | PASS | WebSocket de audio, API de captions externos, SSE y overlay transparente |
 
 ## Criterios de evaluación
 
 | Dimensión | Evidencia de la batería | Estado actual |
 |---|---|---|
-| Calidad | WER contra subtítulo humano: debe ser ≤ 8% | PASS — ver `latest-results/asr-quality.json` |
+| Calidad | WER contra subtítulo humano: debe ser ≤ 8% | PASS — 3,70 %, ver `latest-results/asr-quality.json` |
 | Latencia | Primera leyenda concurrente ≤ 5 s; atraso visual habitual < 2 s y recuperación < 3 s | PASS — visual 0,1–2,4 s; backend p95 0,758 s |
 | Escalabilidad | Carga simultánea de 2, 5 y 10 sesiones más fan-out SSE hasta 5.000 viewers | PASS |
 | Despliegue y operación | Compose válido, health checks, métricas Prometheus, logs estructurados y README | PASS MVP — recuperación forzada sigue siendo un check manual |
-| Innovación | Funcionalidades opcionales | PENDIENTE |
+| Innovación | Overlay, glosario, exportación y observabilidad | PASS — 4 de 5 opcionales oficiales implementados |
 
 ## Opcionales que suman puntaje
 
@@ -57,10 +65,15 @@ Estos puntos aparecen en la descripción del desafío aunque la sección “MVP�
 - Más idiomas, por ejemplo portugués: pendiente.
 - Glosario técnico y nombres propios: implementado por sesión y dirección de
   idioma; alimenta `hotwords` de Whisper y reglas de TranslateGemma.
-- Exportación SRT/VTT/texto: pendiente.
+- Exportación SRT/VTT/texto: implementada desde captions confirmados, en ambos idiomas.
 - Métricas de monitoreo y logs: implementados fuera del front público.
 
 ## Batería repetible
+
+Última corrida completa: **35 PASS · 1 FAIL · 5 manuales/pendientes**. El único
+FAIL es el enlace del video demo. Los cinco controles manuales son envío en
+Devpost, registro de participantes, evaluación humana de naturalidad,
+demostración de recuperación ante fallos y el opcional de un tercer idioma.
 
 Ejecutar desde la raíz del proyecto:
 

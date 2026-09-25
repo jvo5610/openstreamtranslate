@@ -3,81 +3,61 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Vibeathon Live · Studio</title>
-    <link rel="stylesheet" href="/static/styles.css?v=8" />
+    <title>Vibeathon Live</title>
+    <link rel="stylesheet" href="/static/styles.css?v=13" />
   </head>
-  <body>
-    <main>
-      <header>
-        <div class="brand"><span class="pulse"></span> VIBEATHON LIVE · STUDIO</div>
-        <nav><a href="/watch">Abrir vista de audiencia →</a></nav>
-        <div id="health" class="status">Comprobando servicios…</div>
+  <body class="audience-page">
+    <main class="audience-layout">
+      <header class="topbar">
+        <a class="brand" href="/"><span class="brand-dot"></span> VIBEATHON LIVE</a>
+        <label class="session-picker">
+          <span>Charla</span>
+          <select id="session-select" aria-label="Elegir sesión"></select>
+        </label>
+        <span id="audience-status" class="connection-status">Conectando…</span>
       </header>
 
-      <section class="hero compact">
-        <p class="eyebrow">CONTROL DE ESCENARIO · ENGLISH → ESPAÑOL</p>
-        <h1>Un stream.<br /><em>Dos idiomas.</em></h1>
-        <p class="lede">Publicá una fuente real o simulá un stream con video. Los captions se distribuyen una sola vez a toda la audiencia.</p>
-
-        <div class="session-controls">
-          <label>Escenario
-            <select id="session-select" aria-label="Elegir sesión"></select>
-          </label>
-          <label>Idioma principal
-            <select id="language-select" aria-label="Elegir idioma">
-              <option value="es">Español</option>
-              <option value="en">Original · English</option>
-            </select>
-          </label>
-        </div>
-
-        <div class="controls">
-          <button id="mic" class="primary">Iniciar micrófono</button>
-          <label class="secondary accent">Simular stream con video<input id="stream-file" type="file" accept="audio/*,video/*" /></label>
-          <label class="secondary">Procesar archivo completo<input id="file" type="file" accept="audio/*,video/*" /></label>
-          <select id="reference-kind" class="reference-kind" aria-label="Qué parte evaluar">
-            <option value="source">Evaluar reconocimiento EN</option>
-            <option value="target">Evaluar traducción ES</option>
-          </select>
-          <label class="secondary">Cargar referencia<input id="reference-file" type="file" accept=".srt,.vtt,text/vtt" /></label>
-          <button id="clear" class="ghost">Limpiar</button>
-        </div>
-        <p id="reference-status" class="reference-status">Referencia opcional: cargá un SRT o VTT para medir la calidad mientras corre el stream.</p>
-      </section>
-
-      <section id="player-shell" class="player-shell">
-        <video id="preview" class="preview" playsinline></video>
+      <section id="player-shell" class="player-shell audience-player">
+        <video id="stream-video" class="stream-video" playsinline></video>
         <div id="video-placeholder" class="video-placeholder">
-          <span>STREAM PREVIEW</span>
-          <strong>Elegí un video para simular una señal en vivo</strong>
+          <div class="signal-icon"><span></span><span></span><span></span></div>
+          <strong>Esperando señal</strong>
+          <small>La transmisión comenzará automáticamente.</small>
         </div>
-        <div class="live-badge"><span></span><b id="mode">LISTO</b></div>
-        <div class="latency-badge" id="latency">— ms</div>
-        <div id="video-caption" class="video-caption" hidden>
-          <div id="overlay-secondary" class="overlay-secondary"></div>
-          <div id="overlay-primary" class="overlay-primary"></div>
+
+        <div class="live-badge"><span></span><b id="session-state">ESPERANDO</b></div>
+
+        <div id="video-caption" class="video-caption" aria-live="polite" hidden>
+          <span id="overlay-primary" class="overlay-primary"></span>
+        </div>
+
+        <div class="player-gradient"></div>
+        <div class="player-controls" aria-label="Controles del reproductor">
+          <button id="play-toggle" class="icon-button" aria-label="Reproducir">▶</button>
+          <button id="mute-toggle" class="icon-button" aria-label="Silenciar">🔊</button>
+          <div class="live-progress"><span></span></div>
+          <div class="caption-control">
+            <button id="caption-language-button" class="cc-button" aria-expanded="false" aria-haspopup="menu">
+              <b>CC</b><span id="caption-language-label">ES</span>
+            </button>
+            <div id="caption-language-menu" class="caption-menu" role="menu" hidden>
+              <div class="menu-title">Subtítulos</div>
+              <button role="menuitemradio" data-language="off" aria-checked="false">Desactivados</button>
+              <button role="menuitemradio" data-language="es" aria-checked="true">Español</button>
+              <button role="menuitemradio" data-language="en" aria-checked="false">English</button>
+            </div>
+          </div>
+          <button id="fullscreen-toggle" class="icon-button" aria-label="Pantalla completa">⛶</button>
         </div>
       </section>
 
-      <section id="quality" class="quality" hidden>
-        <div><span id="quality-label" class="quality-label">PRECISIÓN DEL RECONOCIMIENTO</span><strong id="quality-score">—</strong></div>
-        <div><span class="quality-label">BLOQUES EVALUADOS</span><strong id="quality-segments">0</strong></div>
-        <p>Comparación por palabras contra los subtítulos publicados. Es orientativa: una traducción correcta puede usar otras palabras.</p>
-      </section>
-
-      <details class="diagnostics">
-        <summary>Registro técnico de captions</summary>
-        <section class="stage">
-          <div id="empty" class="empty">Esperando audio del escenario.</div>
-          <div id="captions" aria-live="polite"></div>
-        </section>
-      </details>
-
-      <footer>
-        <span>faster-whisper · large-v3-turbo</span>
-        <span>TranslateGemma 4B · Redis Streams · SSE</span>
-      </footer>
+      <div class="below-player">
+        <div>
+          <span id="live-kicker" class="live-kicker">ESPERANDO</span>
+          <h1 id="session-title">Main Stage</h1>
+        </div>
+      </div>
     </main>
-    <script src="/static/app.js?v=8"></script>
+    <script src="/static/watch.js?v=21"></script>
   </body>
 </html>

@@ -4,6 +4,8 @@ Subtítulos bilingües de baja latencia para conferencias: una inferencia por
 escenario, distribución a miles de espectadores y operación reproducible con
 software abierto.
 
+**Repositorio público:** <https://github.com/jvo5610/vibeathon-live-captions>
+
 > **English summary:** Vibeathon Live Captions turns live English or Spanish
 > audio into original-language and translated captions. A GPU pipeline runs
 > faster-whisper `large-v3-turbo` plus TranslateGemma 4B; FastAPI and Redis
@@ -40,11 +42,11 @@ provienen de la batería incluida en este repositorio, ejecutada contra una RTX
 
 | Dimensión del jurado | Resultado medido |
 |---|---|
-| Calidad ASR inglesa | WER **4,32 %** / exactitud 95,68 % contra subtítulos humanos |
-| 10 sesiones en paralelo | primera leyenda p50 **2,76 s**, máximo **2,84 s** |
+| Calidad ASR inglesa | WER **3,70 %** / exactitud 96,30 % contra subtítulos humanos |
+| 10 sesiones en paralelo | primera leyenda p50 **2,62 s**, máximo **2,72 s** |
 | 2 streams bilingües + 20 viewers | 20/20 clientes, aislamiento correcto |
-| 100 viewers en una charla | p95 de fan-out **23,99 ms**, una sola inferencia |
-| 1.000 viewers en una réplica | p95 **135 ms**, mismo `event_id` para todos |
+| 100 viewers en una charla | p95 de fan-out **24,75 ms**, una sola inferencia |
+| 1.000 viewers en una réplica | p95 **133,1 ms**, mismo `event_id` para todos |
 | Experiencia visual | atraso observado 0,1–2,4 s; cola pico de un bloque |
 
 Son mediciones de laboratorio, no una promesa del cluster de producción. Los
