@@ -10,7 +10,7 @@ One GPU inference per stage. Accessible bilingual captions for every viewer.
 
 ## Demo video
 
-`PENDING: paste the public or unlisted YouTube URL here`
+https://youtu.be/1ihxp3AwdfM
 
 ## Public repository
 

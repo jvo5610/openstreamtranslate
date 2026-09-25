@@ -14,7 +14,7 @@ que sólo pueden participar personas registradas en Nerdearla antes del cierre.
 | Criterio | Cómo se comprueba | Estado actual |
 |---|---|---|
 | Construido durante el 24–25/09/2026 | Fecha del root commit `34dbde4` | PASS — 25/09/2026 |
-| Video demo de 1–2 min | Enlace YouTube en `SUBMISSION.md`; debe mostrar audio real y explicar uso | FAIL — falta grabarlo y enlazarlo |
+| Video demo de 1–2 min | Enlace YouTube en `SUBMISSION.md`; muestra audio real y explica el uso | PASS |
 | Repositorio público | Repositorio Git con remoto público | PASS — `github.com/jvo5610/openstreamtranslate` |
 | Licencia OSI | Archivo `LICENSE` | PASS — MIT |
 | README: puesta en marcha y modelos/credenciales | Inspección automática del README | PASS |

@@ -29,17 +29,20 @@ española. Activo y desactivo el audio para demostrar que el video es real.
 quedan congelados. Reanudo y muestro que ambos regresan juntos al punto en vivo,
 sin reproducir una cola de subtítulos anteriores.
 
-**45–58 s — integración.** Muestro el flujo OBS/vMix → RTMP/SRT → MediaMTX →
-FFmpeg → WebSocket y explico que la aplicación recibe sólo audio. Muestro el
-overlay `/embed/main-stage?lang=en` como Browser Source y menciono que también
-puedo descargar SRT o VTT.
+**45–65 s — integración.** Muestro el flujo OBS/vMix → RTMP/SRT → MediaMTX →
+FFmpeg → WebSocket y explico que la aplicación recibe sólo audio. En el
+laboratorio detengo conceptualmente el publisher simulado y muestro la
+configuración equivalente de OBS: servidor `rtmp://localhost:1935/live` y clave
+`es` o `en`. Muestro el bridge `media_stream_bridge.py`, el `session_id` estable,
+el overlay `/embed/main-stage?lang=en` como Browser Source y la exportación
+SRT/VTT/TXT.
 
-**58–78 s — evidencia.** Presento cuatro números: WER inglés 3,70 %; traducción
+**65–82 s — evidencia.** Presento cuatro números: WER inglés 3,70 %; traducción
 EN→ES chrF 0,6873; 10 sesiones con primera leyenda máxima de 3,51 s; y 1.000
 espectadores con p95 de fan-out de 173,07 ms. Aclaro que la GPU trabaja una vez
 por escenario, no una vez por espectador.
 
-**78–90 s — cierre.** Muestro el diagrama y cierro: “Construí una solución
+**82–90 s — cierre.** Muestro el diagrama y cierro: “Construí una solución
 abierta, reproducible y conectable a una cadena de streaming real. Separa media,
 inferencia y distribución para poder escalar cada parte con el recurso que
 necesita”.
